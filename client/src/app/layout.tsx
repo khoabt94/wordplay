@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/system";
-import Transition from "@/components/transition";
 import Header from "@/components/header";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,8 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} dark text-foreground bg-background`}>
         <NextUIProvider>
-          <main className="h-screen max-w-6xl mx-auto">
-            <Header />
+          <Header />
+          <main className="h-screen max-w-6xl mx-auto px-4">
             {children}
           </main>
         </NextUIProvider>
