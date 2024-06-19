@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={`${inter.className} dark text-foreground bg-background`}>
         <NextUIProvider>
           <Header />
-          <main className="h-screen max-w-6xl mx-auto px-4">
+          <main className="h-screen max-w-6xl mx-auto px-4 pt-4">
             {children}
           </main>
         </NextUIProvider>

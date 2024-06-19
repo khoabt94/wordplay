@@ -8,7 +8,7 @@ export default function Transition({ children }: { children: ReactNode }) {
     initial={{ y: 20, opacity: 0 }}
     animate={{ y: 0, opacity: 1 }}
     transition={{ ease: 'easeInOut', duration: 0.3 }}
-    className='pt-20'
+    className='pt-20 h-full pb-5'
   >
     {children}
   </motion.div>
