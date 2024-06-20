@@ -1,7 +1,6 @@
 'use client'
 
-import { Avatar } from "@nextui-org/react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 
 export default function UserControl() {
     return (

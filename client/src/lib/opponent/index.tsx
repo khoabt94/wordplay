@@ -1,10 +1,9 @@
-import React from 'react'
 import { User, ScrollShadow } from "@nextui-org/react";
 
 export default function OpponentList() {
     return (
         <ScrollShadow hideScrollBar className='flex flex-col gap-y-5 py-4 h-[600px]'>
-            {Array(50).fill(1).map((user, index) => (<User
+            {Array(50).fill(1).map((_user, index) => (<User
                 key={index}
                 className='justify-start'
                 name="Jane Doe"

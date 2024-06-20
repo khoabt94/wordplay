@@ -1,23 +1,22 @@
 'use client'
 
-import React, { useRef, useState } from "react";
-import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Button,
-} from "@nextui-org/react";
-import { Switch } from "@nextui-org/react";
 import { motionProps } from "@/constants";
-import { useModalStore } from "@/stores";
+import { useAuthActions, useToast } from "@/hooks/utils";
+import { Api } from "@/interfaces";
 import LoginForm from "@/lib/login";
 import SignupForm from "@/lib/signup";
 import { LoginFormSchema, SignupFormSchema } from "@/schemas/auth.schemas";
-import * as yup from 'yup'
-import { useAuthActions, useToast } from "@/hooks/utils";
-import { Api } from "@/interfaces";
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    Switch,
+} from "@nextui-org/react";
+import { useRef, useState } from "react";
+import * as yup from 'yup';
 
 enum Mode {
     SIGNUP = 'SIGNUP',
@@ -28,7 +27,7 @@ export default function AuthModal() {
     const [mode, setMode] = useState<Mode>(Mode.LOGIN)
     const { signUp } = useAuthActions()
     const { toastError } = useToast()
-    const { isOpenAuthModal, onToggleAuthModal } = useModalStore();
+    // const { isOpenAuthModal, onToggleAuthModal } = useModalStore();
     const loginFormRef = useRef<{ getValues: () => yup.InferType<typeof LoginFormSchema> }>()
     const signupFormRef = useRef<{ getValues: () => yup.InferType<typeof SignupFormSchema> }>()
 
@@ -41,16 +40,18 @@ export default function AuthModal() {
         }
         if (mode === Mode.SIGNUP) {
             await signUp(values as Api.AuthApi.SignUpPayload)
-            onToggleAuthModal(false)
+            // onToggleAuthModal(false)
         }
     }
 
     return (
         <>
-            <Button variant="solid" color="primary" className="w-fit" radius="sm" size="md" onPress={() => onToggleAuthModal(true)}>Login & Signup</Button>
+            <Button variant="solid" color="primary" className="w-fit" radius="sm" size="md"
+            // onPress={() => onToggleAuthModal(true)}
+            >Login & Signup</Button>
             <Modal
-                isOpen={isOpenAuthModal}
-                onOpenChange={onToggleAuthModal}
+                // isOpen={isOpenAuthModal}
+                // onOpenChange={onToggleAuthModal}
                 motionProps={motionProps}
                 backdrop={"blur"}
             >

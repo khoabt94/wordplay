@@ -1,11 +1,25 @@
-import { useRouter } from "next/navigation"
+import { useMemo } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-export const useHandleRouter = () => {
-  const router = useRouter()
+export function useHandleRouter() {
+    const navigate = useNavigate()
+    const [searchParams, setSearchParams] = useSearchParams();
 
-  const pushRouter = (url: string) => router.push(url)
+    const query = useMemo(() => {
+        const res: { [key: string]: string } = {};
+        searchParams.forEach((value: string, key: string) => {
+            res[key] = value;
+        });
+        return res;
+    }, [searchParams]);
 
-  return {
-    pushRouter
-  }
+    const pushQuery = (obj: { [key: string]: string }) => {
+        const cloned = { ...obj };
+        for (const key in obj) {
+            if (obj[key]) cloned[key] = obj[key];
+        }
+        setSearchParams(cloned)
+    };
+
+    return { pushQuery, query, navigate }
 }

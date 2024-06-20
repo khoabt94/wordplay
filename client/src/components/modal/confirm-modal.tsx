@@ -1,20 +1,19 @@
 'use client'
 
-import React from "react";
-import {
-    Modal,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Button,
-    useDisclosure,
-    Input
-} from "@nextui-org/react";
 import { motionProps } from "@/constants";
+import {
+    Button,
+    Input,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    useDisclosure
+} from "@nextui-org/react";
 
 export default function ConfirmModal() {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpenChange } = useDisclosure();
 
     return (
         <Modal

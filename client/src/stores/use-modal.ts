@@ -1,14 +1,20 @@
-import { create } from 'zustand'
+import { Common } from '@/interfaces';
+import { ElementType } from 'react';
+import { create } from 'zustand';
 
-interface ModalState {
-    isOpenAuthModal: boolean
+type IModalStore = {
+    modals: Common.ModalBaseData[];
+    openModal: (_element: ElementType, _props: Common.ModalProps) => void;
+    removeAll: () => void;
+};
 
-    onToggleAuthModal: (_flag: boolean) => void
-}
+export const useModalStore = create<IModalStore>((set) => ({
+    modals: [],
 
-export const useModalStore = create<ModalState>()((set) => ({
-    isOpenAuthModal: false,
-
-
-    onToggleAuthModal: (isOpenAuthModal) => set({ isOpenAuthModal }),
-}))
+    openModal: (Component, modalProps) => set((state) => ({
+        modals: [...state.modals, { Component, modalProps }],
+    })),
+    removeAll: () => {
+        set({ modals: [] });
+    },
+}));
