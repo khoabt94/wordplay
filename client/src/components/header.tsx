@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react'
 import { Joystick } from 'lucide-react';
 import Link from 'next/link';
-import UserControl from './user-control';
-// import AuthModal from './modal/auth-modal';
+// import UserControl from './user-control';
+import AuthModal from './modal/auth-modal';
 import Image from 'next/image';
 
 export default function Header() {
@@ -14,10 +14,10 @@ export default function Header() {
       <div className="">
         <Image src='/logo.webp' alt="Logo" width={180} height={180} quality={90} />
       </div>
-      {/* <AuthModal /> */}
-      <Suspense>
+      <AuthModal />
+      {/* <Suspense>
         <UserControl />
-      </Suspense>
+      </Suspense> */}
     </div>
   )
 }

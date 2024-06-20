@@ -16,6 +16,8 @@ import LoginForm from "@/lib/login";
 import SignupForm from "@/lib/signup";
 import { LoginFormSchema, SignupFormSchema } from "@/schemas/auth.schemas";
 import * as yup from 'yup'
+import { useAuthActions, useToast } from "@/hooks/utils";
+import { Api } from "@/interfaces";
 
 enum Mode {
     SIGNUP = 'SIGNUP',
@@ -24,6 +26,8 @@ enum Mode {
 
 export default function AuthModal() {
     const [mode, setMode] = useState<Mode>(Mode.LOGIN)
+    const { signUp } = useAuthActions()
+    const { toastError } = useToast()
     const { isOpenAuthModal, onToggleAuthModal } = useModalStore();
     const loginFormRef = useRef<{ getValues: () => yup.InferType<typeof LoginFormSchema> }>()
     const signupFormRef = useRef<{ getValues: () => yup.InferType<typeof SignupFormSchema> }>()
@@ -31,6 +35,14 @@ export default function AuthModal() {
     const onSubmit = async () => {
         const values = mode === Mode.LOGIN ? await loginFormRef.current?.getValues() : await signupFormRef.current?.getValues()
         console.log(values)
+        if (!values) {
+            toastError('Empty values')
+            return;
+        }
+        if (mode === Mode.SIGNUP) {
+            await signUp(values as Api.AuthApi.SignUpPayload)
+            onToggleAuthModal(false)
+        }
     }
 
     return (
