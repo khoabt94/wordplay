@@ -3,12 +3,13 @@ import axios from "axios"
 import Cookies from "js-cookie";
 
 const AxiosInstance = axios.create({
-  baseURL: import.meta.env.API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   timeout: 20000,
   headers: {
     "Content-Type": "application/json",
   }
 })
+
 
 
 // Add a request interceptor
