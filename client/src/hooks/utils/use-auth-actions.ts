@@ -1,5 +1,6 @@
 import {
   signup as signupApi,
+  login as loginApi,
 } from '@/services'
 import { useToast } from './use-toast';
 import { useAuthStore } from '@/stores/use-auth';
@@ -26,8 +27,21 @@ export function useAuthActions() {
     }
   }
 
+  const login = async (payload: Api.AuthApi.LoginPayload) => {
+    try {
+      const res = await loginApi(payload)
+      setUser(res.user)
+      Cookies.set(COOKIE_KEY.ACCESS_TOKEN, res.access_token)
+      toastSuccess("Login successfully")
+      navigate(siteConfig.paths.home())
+    } catch (error: any) {
+      toastError(error.message)
+    }
+  }
+
 
   return {
-    signUp
+    signUp,
+    login
   }
 }

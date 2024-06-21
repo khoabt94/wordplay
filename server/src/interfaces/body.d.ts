@@ -5,5 +5,10 @@ export namespace Body {
     password: string
   }
 
+  interface Login {
+    email: string
+    password: string
+  }
+
 
 }

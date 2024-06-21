@@ -1,9 +1,9 @@
+import { COOKIE_KEY } from "@/constants";
 import axios from "axios"
-
-const API_URL = 'http://localhost:3000/api/v1'
+import Cookies from "js-cookie";
 
 const AxiosInstance = axios.create({
-  baseURL: API_URL,
+  baseURL: import.meta.env.API_URL,
   timeout: 20000,
   headers: {
     "Content-Type": "application/json",
@@ -14,10 +14,10 @@ const AxiosInstance = axios.create({
 // Add a request interceptor
 AxiosInstance.interceptors.request.use(function (config) {
   // Do something before request is sent
-  // const accessToken = Cookies.get(COOKIE_KEY.ACCESS_TOKEN)
-  // if (accessToken) {
-  //   config.headers.Authorization = `Bearer ${accessToken}`;
-  // }
+  const accessToken = Cookies.get(COOKIE_KEY.ACCESS_TOKEN)
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
   return config;
 }, function (error) {
   // Do something with request error

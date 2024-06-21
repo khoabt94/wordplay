@@ -8,3 +8,17 @@ export const signup = async (
 ): Promise<Api.AuthApi.SignupResponse> => {
   return await AxiosInstance.post(`${BASE_URL}/signup`, payload);
 };
+
+
+export const login = async (
+  payload: Api.AuthApi.LoginPayload
+): Promise<Api.AuthApi.LoginResponse> => {
+  return await AxiosInstance.post(`${BASE_URL}/login`, payload);
+};
+
+
+export const refreshToken = async (
+): Promise<Api.AuthApi.RefreshTokenResponse> => {
+  return await AxiosInstance.post(`${BASE_URL}/refresh-token`);
+};
+

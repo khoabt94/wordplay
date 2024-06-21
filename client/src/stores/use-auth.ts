@@ -2,6 +2,7 @@ import { COOKIE_KEY } from '@/constants';
 import { User } from '@/interfaces';
 import { create } from 'zustand';
 import Cookies from 'js-cookie'
+import { getInfoMe, refreshToken } from '@/services';
 
 type IAuthStore = {
   user: User.Detail | null
@@ -10,9 +11,10 @@ type IAuthStore = {
   setIsFetchingUser: (_flag: boolean) => void;
   clearUser: () => void;
   refreshToken: () => void;
+  getUser: () => void
 };
 
-export const useAuthStore = create<IAuthStore>((set, _get) => ({
+export const useAuthStore = create<IAuthStore>((set, get) => ({
   user: null,
   isFetchingUser: true,
   setIsFetchingUser: (isFetchingUser: boolean) => set({ isFetchingUser }),
@@ -25,9 +27,17 @@ export const useAuthStore = create<IAuthStore>((set, _get) => ({
       return
     }
     try {
-      // const res = await refreshToken();
-      // Cookies.set(COOKIE_KEY.ACCESS_TOKEN, res.access_token)
-      // await get().getUser()
+      const res = await refreshToken();
+      Cookies.set(COOKIE_KEY.ACCESS_TOKEN, res.access_token)
+      await get().getUser()
+    } catch (error) {
+      ///empty
+    }
+  },
+  getUser: async () => {
+    try {
+      const res = await getInfoMe();
+      set({ user: res.user })
     } catch (error) {
       ///empty
     }

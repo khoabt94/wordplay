@@ -15,7 +15,7 @@ export interface IUser {
 }
 
 export interface IUserMethods {
-
+  comparePassword: (_candidate: string, _hash: string) => Promise<boolean>
 }
 
 export interface IUserVirtuals {
@@ -73,6 +73,10 @@ UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, 8)
   next();
 })
+
+UserSchema.methods.comparePassword = async function (candidate, hash) {
+  return await bcrypt.compare(candidate, hash)
+}
 
 
 export const User: TUserModel = model<IUser, TUserModel>("User", UserSchema);

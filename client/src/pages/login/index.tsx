@@ -16,7 +16,7 @@ const LoginPage = () => {
     const [mode, setMode] = useState<Mode>(Mode.LOGIN)
     const loginFormRef = useRef<{ getValues: () => yup.InferType<typeof LoginFormSchema> }>()
     const signupFormRef = useRef<{ getValues: () => yup.InferType<typeof SignupFormSchema> }>()
-    const { signUp } = useAuthActions()
+    const { signUp, login } = useAuthActions()
     const { toastError } = useToast()
 
     const onSubmit = async () => {
@@ -28,6 +28,10 @@ const LoginPage = () => {
         if (mode === Mode.SIGNUP) {
             await signUp(values as Api.AuthApi.SignUpPayload)
         }
+        if (mode === Mode.LOGIN) {
+            await login(values as Api.AuthApi.LoginPayload)
+        }
+
     }
 
     return (

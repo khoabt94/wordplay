@@ -1,10 +1,11 @@
 import { Express } from 'express'
 import { CustomError } from '../error'
 import { Routes } from '../../constants'
-import { authRouter } from '../../routes'
+import { authRouter, userRouter } from '../../routes'
 
 export default (app: Express) => {
   app.use(Routes.auth, authRouter)
+  app.use(Routes.user, userRouter)
 
 
   app.all('*', (req, _res, _next) => {

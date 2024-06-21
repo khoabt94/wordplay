@@ -1,10 +1,10 @@
 'use client'
 
 import { Joystick } from 'lucide-react';
-import { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 // import UserControl from './user-control';
-import AuthModal from '../modal/auth-modal';
 import { useLocation } from 'react-router-dom';
+import UserControl from './user-control';
 
 const pathToHideHeader = [
   '/login'
@@ -20,10 +20,9 @@ export default function Header() {
       <div className="">
         <img src='/logo.webp' alt="Logo" width={180} height={180} />
       </div>
-      <AuthModal />
-      {/* <Suspense>
+      <Suspense>
         <UserControl />
-      </Suspense> */}
+      </Suspense>
     </div>
   )
 }
