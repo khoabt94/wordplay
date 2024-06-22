@@ -2,7 +2,7 @@ import { MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants
 import { v4 as uuid } from 'uuid';
 import { Socket } from "socket.io";
 import { io } from "../..";
-import { IUserOnline } from "../interfaces";
+import { IUserOnline } from "../interfaces/user";
 
 interface ITable {
     table_id: string

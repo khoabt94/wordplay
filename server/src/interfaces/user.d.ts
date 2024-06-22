@@ -2,12 +2,12 @@ export interface IUser {
     name: string;
     email: string;
     avatar: string;
+    banner: string;
     password: string;
     passwordResetToken?: string;
     passwordResetTokenExpire?: Date
     passwordChangeAt?: Date
-    level: number;
-    xp: number;
+    elo: number;
 }
 
 export interface IUserMethods {

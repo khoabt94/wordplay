@@ -1,8 +1,7 @@
 import { Model, Schema, model } from "mongoose";
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
-import { IUser, IUserMethods, IUserVirtuals } from "../interfaces";
-
+import { IUser, IUserMethods, IUserVirtuals } from "../interfaces/user";
 
 type TUserModel = Model<IUser, {}, IUserMethods, IUserVirtuals>
 
@@ -18,7 +17,14 @@ const UserSchema = new Schema<IUser, TUserModel, IUserMethods, IUserVirtuals>({
     lowercase: true,
     validate: [validator.isEmail, 'Please provide a valid email']
   },
-  avatar: String,
+  avatar: {
+    type: String,
+    default: 'https://uyjetoiilsjpcdzissja.supabase.co/storage/v1/object/public/images/default-avatar.jpg',
+  },
+  banner: {
+    type: String,
+    default: 'https://uyjetoiilsjpcdzissja.supabase.co/storage/v1/object/public/images/default-background.png',
+  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
@@ -37,13 +43,9 @@ const UserSchema = new Schema<IUser, TUserModel, IUserMethods, IUserVirtuals>({
     type: Date,
     select: false,
   },
-  level: {
+  elo: {
     type: Number,
-    default: 1,
-  },
-  xp: {
-    type: Number,
-    default: 0,
+    default: 500,
   },
 }, {
   timestamps: true

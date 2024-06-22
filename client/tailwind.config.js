@@ -27,6 +27,7 @@ export default {
             foreground: "#ffffff",
           },
           focus: "#BEF264",
+          whitelow: '#ecedee'
         },
       },
     },

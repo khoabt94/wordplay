@@ -6,6 +6,8 @@ const paths = {
   findMatch: () => '/find-match',
   match: (id: string) => `/match/${id}`,
   matchTemplate: () => `/match/:matchId`,
+  myAccount: () => `/my-account`,
+  myMatches: () => `/my-matches`,
   play: () => '/play'
 };
 

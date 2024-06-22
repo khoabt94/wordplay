@@ -1,3 +1,4 @@
+import UserAvatar from "@/components/common/user-avatar";
 import { siteConfig } from "@/configs/site";
 import { QUERY_KEY, ServerToClientEventsKeys } from "@/constants";
 import { useGetUsersOnline } from "@/hooks/queries";
@@ -54,14 +55,7 @@ export default function HomePage() {
                     </h3>
                     <AvatarGroup isBordered max={5}>
                         {usersOnline.map(user => (
-                            <Avatar
-                                name={user.name.slice(0, 2).toUpperCase()}
-                                isBordered
-                                src={user.avatar}
-                                size="lg"
-                                className="cursor-pointer"
-                                color="primary"
-                            />
+                            <UserAvatar user={user} />
                         ))}
                     </AvatarGroup>
                     <Button

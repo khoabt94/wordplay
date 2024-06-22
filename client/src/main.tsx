@@ -4,7 +4,7 @@ import { NextUIProvider } from "@nextui-org/system";
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { AuthProvider, SocketProvider } from './providers'
+import { AuthProvider, ModalProvider, SocketProvider } from './providers'
 import { AppRoutes } from './routes/app-routes'
 import { Toaster } from './components/toast/toaster'
 
@@ -19,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <SocketProvider>
             <AppRoutes />
             <Toaster />
+            <ModalProvider />
           </SocketProvider>
         </AuthProvider>
       </NextUIProvider>

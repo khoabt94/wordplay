@@ -1,6 +1,6 @@
 import { io } from "../.."
 import { ServerToClientEventsKeys } from "../constants"
-import { IUser, IUserOnline } from "../interfaces"
+import { IUser, IUserOnline } from "../interfaces/user"
 
 
 

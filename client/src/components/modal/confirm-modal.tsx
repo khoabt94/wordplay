@@ -1,42 +1,43 @@
 'use client'
 
 import { motionProps } from "@/constants";
+import { Common } from "@/interfaces";
 import {
     Button,
-    Input,
     Modal,
     ModalBody,
     ModalContent,
     ModalFooter,
-    ModalHeader,
-    useDisclosure
+    ModalHeader
 } from "@nextui-org/react";
 
-export default function ConfirmModal() {
-    const { isOpen, onOpenChange } = useDisclosure();
+interface ConfirmModalProps extends Common.ModalProps {
+    text: string
+}
+
+export default function ConfirmModal({ open = true, text, onClose, onSubmit }: ConfirmModalProps) {
 
     return (
         <Modal
-            backdrop="opaque"
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
+            backdrop="blur"
+            isOpen={open}
+            onOpenChange={(flag) => {
+                if (!flag) onClose?.()
+            }}
             motionProps={motionProps}
+            placement="center"
         >
-            <ModalContent>
+            <ModalContent className="bg-slate-700 shadow-md">
                 {(onClose) => (
                     <>
-                        <ModalHeader className="flex flex-col gap-1">Login</ModalHeader>
                         <ModalBody>
-                            <div className="flex flex-col gap-5">
-                                <Input type="email" label="Email" />
-                                <Input type="password" label="Password" />
-                            </div>
+                            <ModalHeader className="text-[#ecedee] text-center justify-center">{text}</ModalHeader>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="danger" variant="light" onPress={onClose}>
+                            <Button color="danger" variant="light" className="text-slate-100" onPress={onClose}>
                                 Cancel
                             </Button>
-                            <Button color="primary" onPress={onClose}>
+                            <Button className="bg-[#FB2576] text-white" onPress={onSubmit}>
                                 Confirm
                             </Button>
                         </ModalFooter>

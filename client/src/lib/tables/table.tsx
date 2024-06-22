@@ -1,3 +1,5 @@
+import UserAvatar from "@/components/common/user-avatar"
+import UserElo from "@/components/common/user-elo"
 import { MatchLanguageOption, MatchModeOption } from "@/constants"
 import { Table } from "@/interfaces"
 import { Avatar, Button, Divider } from "@nextui-org/react"
@@ -12,14 +14,7 @@ export default function TableItem({ table, onClickJoin }: Props) {
     const [user] = opponents
     return (
         <div className="w-full relative group pt-10">
-            <Avatar
-                name={user.name.slice(0, 2).toUpperCase()}
-                isBordered
-                src={user.avatar}
-                size="lg"
-                className="cursor-pointer absolute -translate-y-1/2 left-5 z-20 w-[80px] h-[80px]"
-                color="primary"
-            />
+            <UserAvatar user={user} className="cursor-pointer absolute -translate-y-1/2 left-5 z-20 w-[80px] h-[80px]" />
             <Button
                 type="button"
                 color="primary"
@@ -39,7 +34,9 @@ export default function TableItem({ table, onClickJoin }: Props) {
                     </div>
                     <Divider orientation="vertical" />
                     <div className="w-[10%] flex-shrink-0  text-center">
-                        <p className="text-sm">1200</p>
+                        <UserElo
+                            user={user}
+                        />
                     </div>
                     <Divider orientation="vertical" />
                     <div className="flex-1 text-xs leading-loose text-right">

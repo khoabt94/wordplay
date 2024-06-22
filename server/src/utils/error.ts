@@ -1,4 +1,4 @@
-import { ErrorConstructorParams } from "../interfaces";
+import { ErrorConstructorParams } from "../interfaces/error";
 
 export class CustomError extends Error {
   statusCode: number;

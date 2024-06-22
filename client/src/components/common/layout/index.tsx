@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import Header from './header'
+import Header from '../header'
 
 export function RootLayout({ children }: { children: ReactNode }) {
   return (
