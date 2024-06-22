@@ -4,6 +4,6 @@ export namespace User {
     name: string;
     email: string;
     avatar: string;
-    _id: string
+    _id?: string
   }
 }

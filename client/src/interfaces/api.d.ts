@@ -1,3 +1,4 @@
+import { Table } from "./table"
 import { User } from "./user"
 
 export namespace Api {
@@ -38,6 +39,19 @@ export namespace Api {
       user: User.Detail,
     }
 
+    interface GetUsersOnlineResponse {
+      users: User.Detail[],
+    }
+
+
+  }
+
+
+  namespace TableApi {
+
+    interface GetTablesResponse {
+      tables: Table.Detail[],
+    }
 
 
 

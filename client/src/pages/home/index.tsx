@@ -1,37 +1,36 @@
-import { useAuthStore, useSocketStore } from "@/stores";
-import { Suspense, useEffect, useState } from "react";
-import { Avatar, AvatarGroup, Button, Card } from "@nextui-org/react";
-import { User } from "@/interfaces";
-import { useHandleRouter } from "@/hooks/utils";
 import { siteConfig } from "@/configs/site";
-import { Skeleton } from "@nextui-org/react";
+import { QUERY_KEY, ServerToClientEventsKeys } from "@/constants";
+import { useGetUsersOnline } from "@/hooks/queries";
+import { useHandleRouter } from "@/hooks/utils";
+import { User } from "@/interfaces";
+import { useSocketStore } from "@/stores";
+import { Avatar, AvatarGroup, Button, Card, Skeleton } from "@nextui-org/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo } from "react";
 
 export default function HomePage() {
     const { socket } = useSocketStore()
-    const { user } = useAuthStore()
     const { navigate } = useHandleRouter()
-    const [isLoading, setIsLoading] = useState(true)
-    const [usersOnline, setUsersOnline] = useState<User.Detail[]>([])
+    const { data: dataUsersOnline, isFetching } = useGetUsersOnline()
+    const usersOnline = useMemo(() => dataUsersOnline?.users || [], [dataUsersOnline])
+    const queryClient = useQueryClient()
+
     useEffect(() => {
         if (!socket) return;
-        socket.on('numberUsersOnline', ({ users }: { users: User.Detail[] }) => {
+        socket.on(ServerToClientEventsKeys.number_users_online, ({ users }: { users: User.Detail[] }) => {
             console.log({ users })
-            setUsersOnline(users.filter(u => u._id !== user?._id))
-            setTimeout(() => {
-                setIsLoading(false)
-            }, 1000)
-
+            queryClient.setQueryData([QUERY_KEY.USER.GET_USERS_ONLINE], { users })
         })
 
 
         return () => {
-            socket.off('numberUsersOnline', () => console.log('numberUsersOnline'));
+            socket.off(ServerToClientEventsKeys.number_users_online, () => console.log('numberUsersOnline'));
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socket]);
     return (
         <div className="flex flex-col gap-y-5 px-4 justify-center items-center h-full pt-10">
-            {isLoading ? (
+            {isFetching ? (
                 <Card className="w-[200px] space-y-5 p-4" radius="lg">
                     <Skeleton className="rounded-lg">
                         <div className="h-24 rounded-lg bg-default-300"></div>

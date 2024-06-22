@@ -1,7 +1,13 @@
-FROM docker
+FROM node:21-alpine
 
-WORKDIR /myapp
+WORKDIR /app
 
-COPY compose.yaml .
+COPY package.json .
 
-CMD [ "docker-compose", "up","-d" ]
+RUN yarn install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD npm start

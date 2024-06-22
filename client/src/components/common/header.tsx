@@ -15,7 +15,7 @@ export default function Header() {
   const show = useMemo(() => !pathToHideHeader.includes(pathname), [pathname])
   if (!show) return <></>
   return (
-    <div className='h-20 w-full flex items-center justify-between py-5 px-4 overflow-hidden'>
+    <div className='h-20 max-w-7xl flex items-center justify-between py-5 px-4 overflow-hidden mx-auto'>
       <Joystick size={40} strokeWidth={1.6} />
       <div className="">
         <img src='/logo.webp' alt="Logo" width={180} height={180} />
