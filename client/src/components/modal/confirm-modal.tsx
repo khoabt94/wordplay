@@ -1,6 +1,6 @@
 'use client'
 
-import { motionProps } from "@/src/constants";
+import { motionProps } from "@/constants";
 import {
     Button,
     Input,

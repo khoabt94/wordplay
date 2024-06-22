@@ -1,6 +1,6 @@
 import Background from '@/assets/background.png';
 import { useAuthActions, useToast } from '@/hooks/utils';
-import { Api } from '@/src/interfaces';
+import { Api } from '@/interfaces';
 import LoginForm from '@/lib/login';
 import SignupForm from '@/lib/signup';
 import { LoginFormSchema, SignupFormSchema } from '@/schemas/auth.schemas';

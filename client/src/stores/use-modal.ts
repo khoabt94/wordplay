@@ -1,4 +1,4 @@
-import { Common } from '@/src/interfaces';
+import { Common } from '@/interfaces';
 import { ElementType } from 'react';
 import { create } from 'zustand';
 
