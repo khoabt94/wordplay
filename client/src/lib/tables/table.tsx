@@ -1,5 +1,5 @@
-import { MatchLanguageOption, MatchModeOption } from "@/constants"
-import { Table } from "@/interfaces"
+import { MatchLanguageOption, MatchModeOption } from "@/src/constants"
+import { Table } from "@/src/interfaces"
 import { Avatar, Button, Divider } from "@nextui-org/react"
 
 type Props = {

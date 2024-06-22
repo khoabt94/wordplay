@@ -4,11 +4,11 @@ import {
 } from '@/services'
 import { useToast } from './use-toast';
 import { useAuthStore } from '@/stores/use-auth';
-import { Api } from '@/interfaces';
+import { Api } from '@/src/interfaces';
 import { useHandleRouter } from './use-handle-router';
 import { siteConfig } from '@/configs/site';
 import Cookies from 'js-cookie';
-import { COOKIE_KEY } from '@/constants';
+import { COOKIE_KEY } from '@/src/constants';
 
 export function useAuthActions() {
   const { toastError, toastSuccess } = useToast()

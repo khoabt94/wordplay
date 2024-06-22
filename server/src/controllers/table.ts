@@ -1,7 +1,7 @@
 import { Response } from "express"
-import TypedRequest from "../interfaces/request"
 import CurrentTables from "../socket/table"
 import catchAsync from "../utils/catch-async"
+import { TypedRequest } from "../interfaces"
 
 const getTables = catchAsync(async (req: TypedRequest<{}, {}>, res: Response) => {
   const { user } = req

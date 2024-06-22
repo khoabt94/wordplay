@@ -5,7 +5,7 @@ import { useGetTables } from "@/hooks/queries";
 import { useEffect, useMemo } from "react";
 import { RefreshCw } from 'lucide-react';
 import { useToast } from "@/hooks/utils";
-import { ClientToServerEventsKeys, ServerToClientEventsKeys } from "@/constants";
+import { ClientToServerEventsKeys, ServerToClientEventsKeys } from "@/src/constants";
 
 export default function Tables() {
     const { isFindingMatch } = useStateMatch()

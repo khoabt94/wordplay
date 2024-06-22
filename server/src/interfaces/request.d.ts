@@ -10,5 +10,3 @@ export interface TypedRequest<B, Q> extends ExpressRequest {
   query: Q
   user?: IUser
 }
-
-export default TypedRequest;

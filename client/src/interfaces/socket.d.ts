@@ -1,4 +1,4 @@
-import { ClientToServerEventsKeys, MatchLanguage, MatchMode, ServerToClientEventsKeys } from "@/constants";
+import { ClientToServerEventsKeys, MatchLanguage, MatchMode, ServerToClientEventsKeys } from "@/src/constants";
 import { Table } from "./table";
 import { User } from "./user";
 

@@ -1,5 +1,5 @@
-import { COOKIE_KEY } from '@/constants';
-import { User } from '@/interfaces';
+import { COOKIE_KEY } from '@/src/constants';
+import { User } from '@/src/interfaces';
 import { create } from 'zustand';
 import Cookies from 'js-cookie'
 import { getInfoMe, refreshToken } from '@/services';

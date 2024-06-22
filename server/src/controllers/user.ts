@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express"
-import TypedRequest from "../interfaces/request"
 import catchAsync from "../utils/catch-async"
 import CurrentUsersOnline from "../socket/user-online"
+import { TypedRequest } from "../interfaces"
 
 const getInfoMe = catchAsync(async (req: TypedRequest<{}, {}>, res: Response, _next: NextFunction) => {
   const { user } = req

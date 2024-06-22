@@ -1,26 +1,8 @@
 import { Model, Schema, model } from "mongoose";
 import validator from 'validator'
 import bcrypt from 'bcryptjs'
+import { IUser, IUserMethods, IUserVirtuals } from "../interfaces";
 
-export interface IUser {
-  name: string;
-  email: string;
-  avatar: string;
-  password: string;
-  passwordResetToken?: string;
-  passwordResetTokenExpire?: Date
-  passwordChangeAt?: Date
-  level: number;
-  xp: number;
-}
-
-export interface IUserMethods {
-  comparePassword: (_candidate: string, _hash: string) => Promise<boolean>
-}
-
-export interface IUserVirtuals {
-
-}
 
 type TUserModel = Model<IUser, {}, IUserMethods, IUserVirtuals>
 

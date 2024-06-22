@@ -1,5 +1,13 @@
 import { NextFunction, Request, Response, Express } from "express";
-import { CustomError, ErrorName } from "../error";
+import { CustomError } from "./error";
+
+export enum ErrorName {
+  CastError = 'CastError',
+  DuplicateError = 11000,
+  ValidationError = 'ValidationError',
+  JsonWebTokenError = 'JsonWebTokenError',
+  TokenExpiredError = 'TokenExpiredError'
+}
 
 const handleCastError = (err: CustomError) => {
   return new CustomError({

@@ -1,8 +1,8 @@
 import { MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants"
 import { v4 as uuid } from 'uuid';
-import { IUserOnline } from "./user-online"
 import { Socket } from "socket.io";
-import { io } from "../../server";
+import { io } from "../..";
+import { IUserOnline } from "../interfaces";
 
 interface ITable {
     table_id: string

@@ -1,6 +1,6 @@
-import { QUERY_KEY, ServerToClientEventsKeys } from "@/constants";
+import { QUERY_KEY, ServerToClientEventsKeys } from "@/src/constants";
 import { useGetUsersOnline } from "@/hooks/queries";
-import { User } from "@/interfaces";
+import { User } from "@/src/interfaces";
 import { useSocketStore } from "@/stores";
 import { User as UserComponent, ScrollShadow } from "@nextui-org/react";
 import { useQueryClient } from "@tanstack/react-query";

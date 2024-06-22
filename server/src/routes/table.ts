@@ -1,5 +1,5 @@
-import express from 'express'
 import { authControllers, tableControllers } from '../controllers'
+import express from 'express'
 
 const tableRouter = express.Router()
 

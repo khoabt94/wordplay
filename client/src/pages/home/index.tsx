@@ -1,8 +1,8 @@
 import { siteConfig } from "@/configs/site";
-import { QUERY_KEY, ServerToClientEventsKeys } from "@/constants";
+import { QUERY_KEY, ServerToClientEventsKeys } from "@/src/constants";
 import { useGetUsersOnline } from "@/hooks/queries";
 import { useHandleRouter } from "@/hooks/utils";
-import { User } from "@/interfaces";
+import { User } from "@/src/interfaces";
 import { useSocketStore } from "@/stores";
 import { Avatar, AvatarGroup, Button, Card, Skeleton } from "@nextui-org/react";
 import { useQueryClient } from "@tanstack/react-query";

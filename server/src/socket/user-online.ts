@@ -1,12 +1,8 @@
-import { io } from "../../server"
+import { io } from "../.."
 import { ServerToClientEventsKeys } from "../constants"
-import { IUser } from "../models"
+import { IUser, IUserOnline } from "../interfaces"
 
-export interface IUserOnline {
-    socket_id: string
-    user_id: string
-    user: IUser
-}
+
 
 export class UserOnline {
     socket_id: string

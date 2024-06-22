@@ -1,7 +1,7 @@
 import { Express } from 'express'
-import { CustomError } from '../error'
-import { Routes } from '../../constants'
-import { authRouter, userRouter, tableRouter } from '../../routes'
+import { CustomError } from './error'
+import { authRouter, tableRouter, userRouter } from '../routes'
+import { Routes } from '../constants'
 
 export default (app: Express) => {
   app.use(Routes.auth, authRouter)

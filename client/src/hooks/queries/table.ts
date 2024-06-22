@@ -1,5 +1,5 @@
-import { QUERY_KEY } from '@/constants';
-import { Api } from '@/interfaces';
+import { QUERY_KEY } from '@/src/constants';
+import { Api } from '@/src/interfaces';
 import { getTables } from '@/services/table.services';
 
 import { useQuery } from "@tanstack/react-query";

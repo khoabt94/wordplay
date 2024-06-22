@@ -1,4 +1,4 @@
-import { COOKIE_KEY, ClientToServerEventsKeys, ServerToClientEventsKeys } from "@/constants";
+import { COOKIE_KEY, ClientToServerEventsKeys, ServerToClientEventsKeys } from "@/src/constants";
 import { useAuthStore, useSocketStore } from "@/stores";
 import Cookies from "js-cookie";
 import { ReactNode, useEffect } from "react";

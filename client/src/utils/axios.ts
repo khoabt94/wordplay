@@ -1,4 +1,4 @@
-import { COOKIE_KEY } from "@/constants";
+import { COOKIE_KEY } from "@/src/constants";
 import axios from "axios"
 import Cookies from "js-cookie";
 

@@ -1,4 +1,4 @@
-import { Api } from "@/interfaces";
+import { Api } from "@/src/interfaces";
 import AxiosInstance from "@/utils/axios";
 
 const BASE_URL = '/user'

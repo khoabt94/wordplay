@@ -1,7 +1,7 @@
 import { Server, Socket } from "socket.io";
-import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "../../interfaces/socket";
-import { socketControllers } from "../../controllers";
-import { ClientToServerEventsKeys, ServerToClientEventsKeys } from "../../constants";
+import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "../interfaces";
+import { socketControllers } from "../controllers";
+import { ClientToServerEventsKeys, ServerToClientEventsKeys } from "../constants";
 
 export type CustomSocketServer = Server<
     ClientToServerEvents,

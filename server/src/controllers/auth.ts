@@ -1,8 +1,7 @@
 import { NextFunction, Response } from "express"
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { Body } from "../interfaces/body"
-import TypedRequest from "../interfaces/request"
-import { IUser, User } from "../models"
+import { Body, IUser, TypedRequest } from "../interfaces"
+import { User } from "../models"
 import catchAsync from "../utils/catch-async"
 import { CustomError } from "../utils/error"
 import { signToken } from "../utils/sign-token"

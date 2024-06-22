@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon server.ts",
-    "dev": "npx nodemon --exec ts-node server.ts",
+    "start": "npx nodemon ./server/index.ts",
+    "dev": "npx nodemon --exec ts-node ./server/index.ts",
     "client": "cd client && yarn dev",
     "mern": "concurrently -n 'server,client' -c 'yellow,blue' \"yarn run start\" \"yarn run client\"",
     "build": "npm start build"

@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { User } from "../models";
-import { CustomSocket } from "../utils/init/socket";
+import { CustomSocket } from "../utils/socket";
 import CurrentUsersOnline, { UserOnline } from "../socket/user-online";
 import { MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants";
 import CurrentTables, { Table } from "../socket/table";

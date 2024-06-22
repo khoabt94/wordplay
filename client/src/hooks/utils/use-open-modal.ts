@@ -1,4 +1,4 @@
-import { Common } from "@/interfaces";
+import { Common } from "@/src/interfaces";
 import { useModalStore } from "@/stores";
 import { ElementType } from "react";
 

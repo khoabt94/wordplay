@@ -1,6 +1,6 @@
 
 import { siteConfig } from '@/configs/site';
-import { QUERY_KEY, ServerToClientEventsKeys } from '@/constants';
+import { QUERY_KEY, ServerToClientEventsKeys } from '@/src/constants';
 import { useHandleRouter } from '@/hooks/utils';
 import Tables from '@/lib/tables';
 import { useSocketStore, useStateMatch } from '@/stores';
@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { Suspense, useEffect } from 'react';
 import FindForm from '@/lib/find/find-form';
 import FriendsList from '@/lib/friends';
-import { Table } from '@/interfaces';
+import { Table } from '@/src/interfaces';
 
 export default function FindMatchPage() {
   const { socket } = useSocketStore()
