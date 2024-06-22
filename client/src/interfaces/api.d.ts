@@ -44,6 +44,15 @@ export namespace Api {
     }
 
 
+    interface UpdateInfoMePayload {
+      name?: string
+      avatar?: string
+      banner?: string
+    }
+    interface UpdateInfoMeResponse {
+      user: User.Detail,
+    }
+
   }
 
 

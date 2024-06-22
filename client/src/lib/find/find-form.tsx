@@ -16,23 +16,23 @@ export default function FindForm() {
     const { user } = useAuthStore()
     const form = useForm({
         defaultValues: {
-            game_mode: MatchMode.FREESTYLE,
-            game_language: MatchLanguage.VN
+            match_mode: MatchMode.FREESTYLE,
+            match_language: MatchLanguage.VN
         }
     })
 
     const onFindMatch = () => {
         if (!socket || !user) return
-        const { game_language, game_mode } = form.getValues()
+        const { match_language, match_mode } = form.getValues()
 
-        if (!game_language || !game_mode) {
+        if (!match_language || !match_mode) {
             toastError('Please choose your match mode/language')
             return;
         }
         startFindingMatch()
         socket.emit(ClientToServerEventsKeys.find_match, {
-            game_mode,
-            game_language,
+            match_mode,
+            match_language,
             user_id: user?._id || '',
         })
     }
@@ -52,10 +52,10 @@ export default function FindForm() {
             className="text-xl"
             variant='faded'
             multiple={false}
-            selectedKeys={[form.watch('game_mode')]}
+            selectedKeys={[form.watch('match_mode')]}
             onSelectionChange={(keys: Selection) => {
                 if (typeof keys === 'string') return
-                form.setValue('game_mode', getFirstValueFromSet(keys) as MatchMode)
+                form.setValue('match_mode', getFirstValueFromSet(keys) as MatchMode)
             }}
 
         >
@@ -69,10 +69,10 @@ export default function FindForm() {
             className="text-xl"
             variant='faded'
             multiple={false}
-            selectedKeys={[form.watch('game_language')]}
+            selectedKeys={[form.watch('match_language')]}
             onSelectionChange={(keys: Selection) => {
                 if (typeof keys === 'string') return
-                form.setValue('game_language', getFirstValueFromSet(keys) as MatchLanguage)
+                form.setValue('match_language', getFirstValueFromSet(keys) as MatchLanguage)
             }}
         >
             {MatchLanguageOption.map(option => (<SelectItem key={option.value}>

@@ -19,7 +19,7 @@ export default function UserAvatar({ user, onClick, className = '' }: Props) {
             onClick={() => onClick?.()}
             src={user.avatar}
             size="lg"
-            className={cn("cursor-pointer", className)}
+            className={cn("", className)}
             color={rankUser.color}
         />
     )

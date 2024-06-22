@@ -2,6 +2,8 @@ import { NextFunction, Response } from "express"
 import catchAsync from "../utils/catch-async"
 import CurrentUsersOnline from "../socket/user-online"
 import { TypedRequest } from "../interfaces/request"
+import { Body } from "../interfaces/body"
+import { User } from "../models"
 
 const getInfoMe = catchAsync(async (req: TypedRequest<{}, {}>, res: Response, _next: NextFunction) => {
   const { user } = req
@@ -10,6 +12,26 @@ const getInfoMe = catchAsync(async (req: TypedRequest<{}, {}>, res: Response, _n
     status: 'success',
     data: {
       user
+    }
+  })
+})
+
+
+const updateInfoMe = catchAsync(async (req: TypedRequest<Body.UpdateInfoMe, {}>, res: Response, _next: NextFunction) => {
+  const { user } = req
+  const { avatar, banner, name } = req.body
+
+  const updatedUser = await User.findByIdAndUpdate(user._id, {
+    avatar, banner, name
+  }, {
+    new: true,
+    runValidators: true
+  })
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      user: updatedUser
     }
   })
 })
@@ -28,5 +50,6 @@ const getUsersOnline = catchAsync(async (req: TypedRequest<{}, {}>, res: Respons
 
 export const userControllers = {
   getInfoMe,
-  getUsersOnline
+  getUsersOnline,
+  updateInfoMe
 }

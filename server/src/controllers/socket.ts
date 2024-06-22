@@ -1,9 +1,11 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { User } from "../models";
-import { CustomSocket } from "../utils/socket";
-import CurrentUsersOnline, { UserOnline } from "../socket/user-online";
+import mongoose from 'mongoose';
 import { MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants";
+import { User } from "../models";
+import CurrentMatches, { Match } from "../socket/match";
 import CurrentTables, { Table } from "../socket/table";
+import CurrentUsersOnline, { UserOnline } from "../socket/user-online";
+import { CustomSocket } from "../utils/socket";
 
 const authenticate = async (socket: CustomSocket, { access_token }: { access_token: string }) => {
     const decoded = jwt.verify(access_token, process.env.JWT_SECRET_KEY as string) as JwtPayload
@@ -18,7 +20,7 @@ const authenticate = async (socket: CustomSocket, { access_token }: { access_tok
     CurrentUsersOnline.addUser(newUserOnline)
 }
 
-const findMatch = async (socket: CustomSocket, { game_mode, game_language, user_id }: { game_mode: MatchMode, game_language: MatchLanguage, user_id: string }) => {
+const findMatch = async (socket: CustomSocket, { match_mode, match_language, user_id }: { match_mode: MatchMode, match_language: MatchLanguage, user_id: string }) => {
     const user = await User.findById(user_id)
 
 
@@ -28,16 +30,16 @@ const findMatch = async (socket: CustomSocket, { game_mode, game_language, user_
     }
 
     const randomTable = CurrentTables.findRandomTable({
-        game_mode,
-        game_language
+        match_mode,
+        match_language
     })
 
     const newUserOnline = new UserOnline({ socket_id: socket.id, user_id: String(user._id), user })
     if (!randomTable) {
         const newTable = new Table({
-            game_language,
-            game_mode,
-            opponents: [newUserOnline]
+            match_language,
+            match_mode,
+            players: [newUserOnline]
         })
         CurrentTables.createTable(newTable, socket)
 
@@ -71,10 +73,47 @@ const disconnect = (socket: CustomSocket) => {
 }
 
 
+const joinedMatch = async ({ match_id, user_id }: { match_id: string, user_id: string }) => {
+    const findExistingMatchIndex = CurrentMatches.findMatch(match_id)
+    if (findExistingMatchIndex === -1) {
+        const findTable = CurrentTables.findTable(match_id)
+        if (!findTable) return
+        const match = new Match({
+            match_id,
+            match_language: findTable.match_language,
+            match_mode: findTable.match_mode,
+            players: findTable.players
+        })
+        CurrentMatches.createMatch(match)
+    } else {
+        const userJoin = CurrentUsersOnline.findUser(user_id)
+        if (!userJoin) return
+        CurrentMatches.matches[findExistingMatchIndex].matchStart()
+    }
+}
+
+const answer = async ({ match_id, ...rest }: { match_id: string, word: string, user_id: string }) => {
+    const findExistingMatchIndex = CurrentMatches.findMatch(match_id)
+    if (findExistingMatchIndex !== -1) {
+        CurrentMatches.matches[findExistingMatchIndex].checkAnswer(rest)
+    }
+}
+
+
+const timeout = async ({ match_id, user_id }: { match_id: string, user_id: string }) => {
+    const findExistingMatchIndex = CurrentMatches.findMatch(match_id)
+    if (findExistingMatchIndex !== -1) {
+        CurrentMatches.matches[findExistingMatchIndex].timeout({ user_id })
+    }
+}
+
 export const socketControllers = {
     authenticate,
     findMatch,
     cancelMatch,
     joinSpecificTable,
-    disconnect
+    disconnect,
+    joinedMatch,
+    answer,
+    timeout
 }

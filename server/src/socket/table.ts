@@ -6,22 +6,22 @@ import { IUserOnline } from "../interfaces/user";
 
 interface ITable {
     table_id: string
-    opponents: IUserOnline[]
-    game_mode: MatchMode
-    game_language: MatchLanguage
+    players: IUserOnline[]
+    match_mode: MatchMode
+    match_language: MatchLanguage
 }
 
 export class Table {
     table_id: string
-    opponents: IUserOnline[]
-    game_mode: MatchMode
-    game_language: MatchLanguage
+    players: IUserOnline[]
+    match_mode: MatchMode
+    match_language: MatchLanguage
 
-    constructor({ game_language, game_mode, opponents }: Omit<ITable, 'table_id'>) {
+    constructor({ match_language, match_mode, players }: Omit<ITable, 'table_id'>) {
         this.table_id = uuid()
-        this.opponents = opponents
-        this.game_mode = game_mode
-        this.game_language = game_language
+        this.players = players
+        this.match_mode = match_mode
+        this.match_language = match_language
     }
 }
 
@@ -48,21 +48,20 @@ class Tables {
         return findTable ? findTable : null;
     }
 
-    findRandomTable({ game_language, game_mode }: Omit<ITable, 'table_id' | 'opponents'>) {
-        const availableAndSuitableTable = this.tables.filter(table => table.opponents.length === 1 && table.game_language === game_language && table.game_mode === game_mode)
+    findRandomTable({ match_language, match_mode }: Omit<ITable, 'table_id' | 'players'>) {
+        const availableAndSuitableTable = this.tables.filter(table => table.players.length === 1 && table.match_language === match_language && table.match_mode === match_mode)
         if (availableAndSuitableTable.length === 0) return null;
         else return availableAndSuitableTable[Math.floor(Math.random() * availableAndSuitableTable.length)];
     }
 
     joinTable(table_id: string, user: IUserOnline, socket: Socket) {
-        const findTableIndex = this.tables.findIndex(table => table.table_id === table_id)
+        const findTableIndex = this.tables.findIndex(table => table.table_id == table_id)
         if (findTableIndex === -1) return;
-        this.tables[findTableIndex].opponents.push(user)
+        this.tables[findTableIndex].players.push(user)
         const matchId = this.tables[findTableIndex].table_id
         socket.join(matchId)
 
-        io.to(matchId).emit(ServerToClientEventsKeys.join_table, { matchId })
-
+        io.to(matchId).emit(ServerToClientEventsKeys.joining_match, { matchId })
     }
 
 }

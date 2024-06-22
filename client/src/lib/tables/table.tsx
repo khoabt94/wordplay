@@ -10,8 +10,8 @@ type Props = {
 }
 
 export default function TableItem({ table, onClickJoin }: Props) {
-    const { game_language, game_mode, opponents } = table
-    const [user] = opponents
+    const { match_language, match_mode, players } = table
+    const [user] = players
     return (
         <div className="w-full relative group pt-10">
             <UserAvatar user={user} className="cursor-pointer absolute -translate-y-1/2 left-5 z-20 w-[80px] h-[80px]" />
@@ -40,8 +40,8 @@ export default function TableItem({ table, onClickJoin }: Props) {
                     </div>
                     <Divider orientation="vertical" />
                     <div className="flex-1 text-xs leading-loose text-right">
-                        <p>{MatchModeOption.find(option => option.value === game_mode)?.label}</p>
-                        <p>{MatchLanguageOption.find(option => option.value === game_language)?.label}</p>
+                        <p>{MatchModeOption.find(option => option.value === match_mode)?.label}</p>
+                        <p>{MatchLanguageOption.find(option => option.value === match_language)?.label}</p>
                     </div>
                 </div>
             </div>

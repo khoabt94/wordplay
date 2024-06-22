@@ -1,20 +1,13 @@
 'use client'
 
 import { Joystick } from 'lucide-react';
-import { Suspense, useMemo } from 'react';
+import { Suspense } from 'react';
 // import UserControl from './user-control';
-import { Link, useLocation } from 'react-router-dom';
-import UserControl from '../user-control';
 import { siteConfig } from '@/configs/site';
-
-const pathToHideHeader = [
-  '/login'
-]
+import { Link } from 'react-router-dom';
+import UserControl from '../user-control';
 
 export default function Header() {
-  const { pathname } = useLocation()
-  const show = useMemo(() => !pathToHideHeader.includes(pathname), [pathname])
-  if (!show) return <></>
   return (
     <div className='h-20 max-w-7xl flex items-center justify-between py-5 px-4 overflow-hidden mx-auto'>
       <Link to={siteConfig.paths.findMatch()}>

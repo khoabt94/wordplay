@@ -10,5 +10,11 @@ export namespace Body {
     password: string
   }
 
+  interface UpdateInfoMe {
+    name?: string
+    avatar?: string
+    banner?: string
+  }
+
 
 }

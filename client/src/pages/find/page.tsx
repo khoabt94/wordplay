@@ -22,7 +22,7 @@ export default function FindMatchPage() {
       setTableId(table.table_id)
       startFindingMatch()
     })
-    socket.on(ServerToClientEventsKeys.join_table, ({ matchId }) => {
+    socket.on(ServerToClientEventsKeys.joining_match, ({ matchId }) => {
       navigate(siteConfig.paths.match(matchId))
       endFindingMatch()
 
@@ -35,7 +35,7 @@ export default function FindMatchPage() {
 
     return () => {
       socket.off(ServerToClientEventsKeys.create_table, () => console.log('create-table'));
-      socket.off(ServerToClientEventsKeys.join_table, () => console.log('join-table'));
+      socket.off(ServerToClientEventsKeys.joining_match, () => console.log('join-table'));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);

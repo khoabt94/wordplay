@@ -1,3 +1,5 @@
+import { Schema } from "mongoose";
+
 export interface IUser {
     name: string;
     email: string;
@@ -8,6 +10,7 @@ export interface IUser {
     passwordResetTokenExpire?: Date
     passwordChangeAt?: Date
     elo: number;
+    _id: Schema.Types.ObjectId
 }
 
 export interface IUserMethods {

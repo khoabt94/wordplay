@@ -2,9 +2,9 @@ import { User } from "./user"
 
 export namespace Table {
   interface Detail {
-    opponents: User.Detail[]
-    game_mode: MatchMode
-    game_language: MatchLanguage
+    players: User.Detail[]
+    match_mode: MatchMode
+    match_language: MatchLanguage
     table_id: string
   }
 }

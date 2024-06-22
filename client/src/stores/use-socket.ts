@@ -1,6 +1,6 @@
+import { ClientToServerEvents, ServerToClientEvents } from "@/interfaces";
 import { io, Socket } from "socket.io-client";
 import { create } from 'zustand';
-import { ClientToServerEvents, ServerToClientEvents } from '../../../server/src/interfaces/socket'
 
 export type ClientSocket = Socket<ServerToClientEvents, ClientToServerEvents>
 

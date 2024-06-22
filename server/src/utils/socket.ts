@@ -1,7 +1,8 @@
 import { Server, Socket } from "socket.io";
-import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "../interfaces/socket";
-import { socketControllers } from "../controllers";
 import { ClientToServerEventsKeys, ServerToClientEventsKeys } from "../constants";
+import { socketControllers } from "../controllers";
+import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "../interfaces/socket";
+import CurrentUsersOnline from "../socket/user-online";
 
 export type CustomSocketServer = Server<
     ClientToServerEvents,
@@ -36,6 +37,18 @@ export default (io: CustomSocketServer) => {
 
         socket.on(ClientToServerEventsKeys.join_specific_table, (data) => {
             socketControllers.joinSpecificTable(socket, data)
+        });
+
+        socket.on(ClientToServerEventsKeys.joined_match, (data) => {
+            socketControllers.joinedMatch(data)
+        });
+
+        socket.on(ClientToServerEventsKeys.answer, (data) => {
+            socketControllers.answer(data)
+        });
+
+        socket.on(ClientToServerEventsKeys.time_out, (data) => {
+            socketControllers.timeout(data)
         });
 
         socket.on(ServerToClientEventsKeys.disconnect, () => {

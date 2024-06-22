@@ -6,6 +6,6 @@ export namespace User {
     avatar: string;
     banner: string
     elo: number
-    _id?: string
+    _id: string
   }
 }

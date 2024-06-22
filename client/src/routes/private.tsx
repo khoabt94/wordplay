@@ -2,7 +2,7 @@ import { siteConfig } from '@/configs/site';
 import FindMatchPage from '@/pages/find/page';
 import HomePage from '@/pages/home';
 import MatchPage from '@/pages/match';
-import MyAccountPage from '@/pages/my-account';
+import MyProfilePage from '@/pages/my-profile';
 
 export const privateRoutes = [
   {
@@ -18,7 +18,7 @@ export const privateRoutes = [
     element: <MatchPage />,
   },
   {
-    path: siteConfig.paths.myAccount(),
-    element: <MyAccountPage />,
+    path: siteConfig.paths.myProfile(),
+    element: <MyProfilePage />,
   },
 ];

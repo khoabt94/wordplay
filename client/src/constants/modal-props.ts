@@ -18,3 +18,8 @@ export const motionProps = {
         },
     }
 }
+
+export enum RESULT_MODAL_TYPE {
+    WINNER = 'WINNER',
+    LOSER = 'LOSER'
+}

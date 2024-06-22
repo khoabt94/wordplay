@@ -36,12 +36,14 @@ export const io = new Server<
 initSocket(io)
 
 process.on('unhandledRejection', (_err: Error) => {
+  console.log(_err);
   server.close(() => {
     process.exit(1)
   })
 })
 
 process.on('uncaughtException', (_err: Error) => {
+  console.log(_err);
   server.close(() => {
     process.exit(1)
   })
