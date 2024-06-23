@@ -1,12 +1,13 @@
 import { QUERY_KEY } from '@/constants';
-import { Api } from '@/interfaces';
+import { Api, ReactQuery } from '@/interfaces';
 import { getTables } from '@/services/table.services';
 
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetTables = () => {
+export const useGetTables = (options?: ReactQuery.Options,) => {
   return useQuery<Api.TableApi.GetTablesResponse>({
     queryKey: [QUERY_KEY.TABLE.GET_TABLES],
-    queryFn: getTables
+    queryFn: getTables,
+    ...options
   })
 }

@@ -8,8 +8,8 @@ export function useOpenModal() {
   const open = (element: ElementType, props: Common.ModalProps) => {
     openModal(element, {
       ...props,
-      onSubmit: () => {
-        props.onSubmit?.();
+      onSubmit: (data?: any) => {
+        props.onSubmit?.(data);
         removeAll();
       },
       onClose: () => {

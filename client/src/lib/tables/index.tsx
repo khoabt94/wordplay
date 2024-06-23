@@ -12,7 +12,9 @@ export default function Tables() {
     const { toastError } = useToast()
     const { user } = useAuthStore()
     const { socket } = useSocketStore()
-    const { data: dataTables, refetch } = useGetTables()
+    const { data: dataTables, refetch } = useGetTables({
+        refetchOnWindowFocus: true,
+    })
     const tables = useMemo(() => dataTables?.tables || [], [dataTables])
 
     const handleJoinSpecificTable = (tableId: string) => {

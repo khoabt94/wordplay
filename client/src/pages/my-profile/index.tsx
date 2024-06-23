@@ -27,6 +27,15 @@ export default function MyProfilePage() {
         }
     }
 
+    const onChangeName = async (name: string) => {
+        try {
+            await updateInfoMe({ name })
+            toastSuccess('Name changed!')
+        } catch (error: any) {
+            toastError(`Change name failed!: ${error.message}`)
+        }
+    }
+
     return (
         <div className="flex flex-col gap-y-5 px-4 justify-center items-center h-full pt-5">
             <BannerProfile
@@ -34,6 +43,7 @@ export default function MyProfilePage() {
                 isOwnProfile
                 onChangeAvatar={onChangeAvatar}
                 onChangeBanner={onChangeBanner}
+                onChangeName={onChangeName}
             />
         </div>
     )
