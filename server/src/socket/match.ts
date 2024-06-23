@@ -1,9 +1,10 @@
 import fs from "fs";
 import { Schema } from "mongoose";
+import { Match as MatchModel } from '../models/match'
 import { io } from "../../index";
 import { MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants";
-import { IHistory, IMatch, IResult } from "../interfaces/match";
-import { IUser, IUserOnline } from "../interfaces/user";
+import { IHistory, IMatch, IMatchModel, IResult } from "../interfaces/match";
+import { IUserOnline } from "../interfaces/user";
 
 export class Match {
     match_mode: MatchMode
@@ -39,6 +40,12 @@ export class Match {
         this.initDictionary()
         if (!this.dictionary) return;
         const randomWord = this.dictionary[Math.floor(Math.random() * this.dictionary.length)]
+
+        this.pushHistory({
+            answer: randomWord,
+            isValid: true,
+            player: null
+        })
         io.to(this.match_id).emit(ServerToClientEventsKeys.match_start, ({ match: this, word: randomWord, user_id_turn: String(this.turn) }))
     }
 
@@ -52,6 +59,11 @@ export class Match {
             if (player.user_id !== user_id) opponent = player
             else owner = player
         })
+        this.pushHistory({
+            answer: word,
+            isValid: !!findWord,
+            player: owner.user._id
+        })
         if (!findWord) {
             if (opponent && owner) {
                 this.endMatch({
@@ -63,6 +75,7 @@ export class Match {
             io.to(opponent.socket_id).emit(ServerToClientEventsKeys.opponent_answer, (findWord))
             this.turn = opponent.user._id
         }
+
     }
 
     timeout({ user_id }: { user_id: string }) {
@@ -78,18 +91,33 @@ export class Match {
         })
     }
 
+    pushHistory(history: Omit<IHistory, 'order'>) {
+        const nextOrder = this.history.length
+        this.history.push({
+            ...history,
+            order: nextOrder,
+        })
+    }
 
 
-    endMatch(result: { winner: Schema.Types.ObjectId, loser: Schema.Types.ObjectId }) {
+    async endMatch(result: { winner: Schema.Types.ObjectId, loser: Schema.Types.ObjectId }) {
         this.result = result
+
+        // save match to db
+        const newMatch: IMatchModel = {
+            match_mode: this.match_mode,
+            match_language: this.match_language,
+            players: this.players.map(player => player.user._id),
+            match_id: this.match_id,
+            history: this.history,
+            result: this.result,
+        }
+        await MatchModel.create(newMatch)
+
         io.to(this.match_id).emit(ServerToClientEventsKeys.match_end, ({
             match: {
-                match_mode: this.match_mode,
-                match_language: this.match_language,
+                ...newMatch,
                 players: this.players.map(player => player.user),
-                match_id: this.match_id,
-                history: this.history,
-                result: this.result,
             }
         }))
     }

@@ -1,10 +1,10 @@
 import { Model, Schema, model } from "mongoose";
-import { IMatch, IMatchMethods, IMatchVirtuals, } from "../interfaces/match";
+import { IMatchModel, IMatchMethods, IMatchVirtuals, } from "../interfaces/match";
 import { MatchLanguage, MatchMode } from "../constants";
 
-type TMatchModel = Model<IMatch, {}, IMatchMethods, IMatchVirtuals>
+type TMatchModel = Model<IMatchModel, {}, IMatchMethods, IMatchVirtuals>
 
-const MatchSchema = new Schema<IMatch, TMatchModel, IMatchMethods, IMatchVirtuals>({
+const MatchSchema = new Schema<IMatchModel, TMatchModel, IMatchMethods, IMatchVirtuals>({
     match_mode: {
         type: String,
         enum: MatchMode,
@@ -24,7 +24,7 @@ const MatchSchema = new Schema<IMatch, TMatchModel, IMatchMethods, IMatchVirtual
         {
             order: Number,
             player: {
-                type: [Schema.ObjectId],
+                type: Schema.ObjectId,
                 ref: 'User',
             },
             answer: String,
@@ -33,11 +33,11 @@ const MatchSchema = new Schema<IMatch, TMatchModel, IMatchMethods, IMatchVirtual
     ],
     result: {
         winner: {
-            type: [Schema.ObjectId],
+            type: Schema.ObjectId,
             ref: 'User',
         },
         loser: {
-            type: [Schema.ObjectId],
+            type: Schema.ObjectId,
             ref: 'User',
         },
     }
@@ -46,4 +46,4 @@ const MatchSchema = new Schema<IMatch, TMatchModel, IMatchMethods, IMatchVirtual
 })
 
 
-export const Match: TMatchModel = model<IMatch, TMatchModel>("Match", MatchSchema);
+export const Match: TMatchModel = model<IMatchModel, TMatchModel>("Match", MatchSchema);

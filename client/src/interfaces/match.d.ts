@@ -5,7 +5,7 @@ import { User } from './user';
 export namespace Match {
     export interface History {
         order: number,
-        user_id: string
+        player: string | null
         answer: string,
         isValid: boolean
     }

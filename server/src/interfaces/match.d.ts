@@ -4,7 +4,7 @@ import { IUser, IUserOnline } from "./user"
 
 export interface IHistory {
     order: number,
-    user_id: Schema.Types.ObjectId,
+    player: Schema.Types.ObjectId | null;
     answer: string,
     isValid: boolean
 }
@@ -30,6 +30,10 @@ export interface IMatchEndResponse {
     match_id: string
     history: IHistory[]
     result: IResult | null
+}
+
+export interface IMatchModel extends IMatch {
+    players: Schema.Types.ObjectId[]
 }
 
 export interface IMatchMethods {
