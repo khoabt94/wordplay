@@ -1,25 +1,21 @@
-import UserAvatar from "@/components/common/user-avatar";
-import { ClientToServerEventsKeys, RESULT_MODAL_TYPE, ServerToClientEventsKeys } from "@/constants";
-import { ServerToClientEvents, User } from "@/interfaces";
-import { Match } from "@/interfaces/match";
-import { useAuthStore, useSocketStore } from "@/stores"
-import { Input } from "@nextui-org/react";
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom"
-import FightIcon from '@/assets/fight-icon.png';
-import { useCountdown, useHandleRouter, useOpenModal } from "@/hooks/utils";
 import TimerBar from "@/components/common/progress";
 import ResultModal from "@/components/modal/result-modal";
 import { siteConfig } from "@/configs/site";
-import PlayerList from "./components/player-list";
+import { ClientToServerEventsKeys, RESULT_MODAL_TYPE, ServerToClientEventsKeys } from "@/constants";
+import { useCountdown, useHandleRouter, useOpenModal } from "@/hooks/utils";
+import { ServerToClientEvents, User, Match } from "@/interfaces";
+import { useAuthStore, useSocketStore } from "@/stores";
+import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import AnswerBox from "./components/answer-box";
 import Histories from "./components/histories";
+import PlayerList from "./components/player-list";
 
 const MAX_TIMER = 10
 
 export default function MatchPage() {
     const { socket } = useSocketStore()
-    const { user } = useAuthStore()
+    const { user, getUser } = useAuthStore()
     const { matchId } = useParams()
     const [match, setMatch] = useState<Match.Detail>()
     const [word, setWord] = useState('')
@@ -43,9 +39,9 @@ export default function MatchPage() {
 
         setMatch(match)
         setWord(word)
-        const opp = match.players.find(p => p.user._id !== user._id)
+        const opp = match.players.find(p => p._id !== user._id)
 
-        setOpponent(opp?.user)
+        setOpponent(opp)
         if (user_id_turn === user._id) {
             setIsYourTurn(true)
         }
@@ -83,6 +79,7 @@ export default function MatchPage() {
             result,
             onSubmit: () => navigate(siteConfig.paths.findMatch())
         })
+        getUser()
         clearTimer()
     }
 

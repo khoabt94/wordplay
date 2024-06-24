@@ -1,3 +1,4 @@
+import { Match } from "./match"
 import { Table } from "./table"
 import { User } from "./user"
 
@@ -35,8 +36,12 @@ export namespace Api {
 
   namespace UserApi {
 
-    interface GetInfoMeResponse {
+    interface GetMyProfileResponse {
       user: User.Detail,
+    }
+
+    interface GetMyMatchesResponse {
+      matches: Match.Detail[],
     }
 
     interface GetUsersOnlineResponse {
@@ -44,12 +49,12 @@ export namespace Api {
     }
 
 
-    interface UpdateInfoMePayload {
+    interface UpdateMyProfilePayload {
       name?: string
       avatar?: string
       banner?: string
     }
-    interface UpdateInfoMeResponse {
+    interface UpdateMyProfileResponse {
       user: User.Detail,
     }
 

@@ -63,4 +63,6 @@ UserSchema.methods.comparePassword = async function (candidate, hash) {
 }
 
 
+
+
 export const User: TUserModel = model<IUser, TUserModel>("User", UserSchema);

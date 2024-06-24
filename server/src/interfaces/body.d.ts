@@ -10,7 +10,7 @@ export namespace Body {
     password: string
   }
 
-  interface UpdateInfoMe {
+  interface updateMyProfile {
     name?: string
     avatar?: string
     banner?: string

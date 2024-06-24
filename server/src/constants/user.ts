@@ -1,0 +1,1 @@
+export const DEFAULT_USER_INFO_SELECT_FIELD = '-createdAt -__v -updatedAt -email'

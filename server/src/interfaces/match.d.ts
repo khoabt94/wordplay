@@ -23,10 +23,10 @@ export interface IMatch {
     result: IResult | null
 }
 
-export interface IMatchEndResponse {
+export interface IMatchResponse {
     match_mode: MatchMode
     match_language: MatchLanguage
-    players: IUser[]
+    players: (IUser | Schema.Types.ObjectId)[]
     match_id: string
     history: IHistory[]
     result: IResult | null

@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import mongoose from 'mongoose';
-import { MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants";
+import { DEFAULT_USER_INFO_SELECT_FIELD, MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants";
 import { User } from "../models";
 import CurrentMatches, { Match } from "../socket/match";
 import CurrentTables, { Table } from "../socket/table";
@@ -9,7 +9,7 @@ import { CustomSocket } from "../utils/socket";
 
 const authenticate = async (socket: CustomSocket, { access_token }: { access_token: string }) => {
     const decoded = jwt.verify(access_token, process.env.JWT_SECRET_KEY as string) as JwtPayload
-    const user = await User.findById(decoded.id)
+    const user = await User.findById(decoded.id).select(DEFAULT_USER_INFO_SELECT_FIELD)
 
 
     if (!user) {
@@ -21,7 +21,7 @@ const authenticate = async (socket: CustomSocket, { access_token }: { access_tok
 }
 
 const findMatch = async (socket: CustomSocket, { match_mode, match_language, user_id }: { match_mode: MatchMode, match_language: MatchLanguage, user_id: string }) => {
-    const user = await User.findById(user_id)
+    const user = await User.findById(user_id).select(DEFAULT_USER_INFO_SELECT_FIELD)
 
 
     if (!user) {

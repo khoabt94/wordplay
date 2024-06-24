@@ -3,8 +3,10 @@ import { Schema } from "mongoose";
 import { Match as MatchModel } from '../models/match'
 import { io } from "../../index";
 import { MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants";
-import { IHistory, IMatch, IMatchModel, IResult } from "../interfaces/match";
+import { IHistory, IMatch, IMatchModel, IMatchResponse, IResult } from "../interfaces/match";
 import { IUserOnline } from "../interfaces/user";
+import { User } from "../models";
+import { recalculateElo } from "../utils/calculate-elo";
 
 export class Match {
     match_mode: MatchMode
@@ -36,6 +38,18 @@ export class Match {
         this.dictionary = JSON.parse(data);
     }
 
+    generateMatchResponse(withPlayersId: boolean) {
+        const matchResponse: IMatchResponse = {
+            history: this.history,
+            match_id: this.match_id,
+            match_language: this.match_language,
+            match_mode: this.match_mode,
+            players: withPlayersId ? this.players.map(player => player.user._id) : this.players.map(player => player.user),
+            result: this.result,
+        }
+        return matchResponse
+    }
+
     matchStart() {
         this.initDictionary()
         if (!this.dictionary) return;
@@ -46,7 +60,7 @@ export class Match {
             isValid: true,
             player: null
         })
-        io.to(this.match_id).emit(ServerToClientEventsKeys.match_start, ({ match: this, word: randomWord, user_id_turn: String(this.turn) }))
+        io.to(this.match_id).emit(ServerToClientEventsKeys.match_start, ({ match: this.generateMatchResponse(false), word: randomWord, user_id_turn: String(this.turn) }))
     }
 
     checkAnswer({ word, user_id }: { word: string, user_id: string }) {
@@ -104,21 +118,21 @@ export class Match {
         this.result = result
 
         // save match to db
-        const newMatch: IMatchModel = {
-            match_mode: this.match_mode,
-            match_language: this.match_language,
-            players: this.players.map(player => player.user._id),
-            match_id: this.match_id,
-            history: this.history,
-            result: this.result,
-        }
+        const newMatch = this.generateMatchResponse(true)
         await MatchModel.create(newMatch)
 
+        // recalculate elo
+        const findWinner = await User.findById(result.winner)
+        const findLoser = await User.findById(result.loser)
+        if (!findWinner || !findLoser) return
+        const { winner_elo, loser_elo } = recalculateElo(findWinner.elo, findLoser.elo)
+        findWinner.elo = winner_elo
+        findLoser.elo = loser_elo
+        await findWinner.save()
+        await findLoser.save()
+
         io.to(this.match_id).emit(ServerToClientEventsKeys.match_end, ({
-            match: {
-                ...newMatch,
-                players: this.players.map(player => player.user),
-            }
+            match: this.generateMatchResponse(false)
         }))
     }
 }

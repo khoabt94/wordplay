@@ -39,11 +39,6 @@ export default function UserControl() {
                         My profile
                     </Link>
                 </DropdownItem>
-                <DropdownItem key="matches">
-                    <Link to={siteConfig.paths.myMatches()}>
-                        My matches
-                    </Link>
-                </DropdownItem>
                 <DropdownItem key="delete" className="text-danger" color="danger" onClick={handleClickLogout}>
                     Logout
                 </DropdownItem>

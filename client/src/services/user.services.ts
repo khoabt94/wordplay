@@ -3,15 +3,20 @@ import AxiosInstance from "@/utils/axios";
 
 const BASE_URL = '/user'
 
-export const getInfoMe = async (
-): Promise<Api.UserApi.GetInfoMeResponse> => {
-  return await AxiosInstance.get(`${BASE_URL}/info-me`);
+export const getMyProfile = async (
+): Promise<Api.UserApi.GetMyProfileResponse> => {
+  return await AxiosInstance.get(`${BASE_URL}/my-profile`);
 };
 
-export const updateInfoMe = async (
-  payload: Api.UserApi.UpdateInfoMePayload
-): Promise<Api.UserApi.UpdateInfoMeResponse> => {
-  return await AxiosInstance.patch(`${BASE_URL}/info-me`, payload);
+export const getMyMatches = async (
+): Promise<Api.UserApi.GetMyMatchesResponse> => {
+  return await AxiosInstance.get(`${BASE_URL}/my-match`);
+};
+
+export const updateMyProfile = async (
+  payload: Api.UserApi.UpdateMyProfilePayload
+): Promise<Api.UserApi.UpdateMyProfileResponse> => {
+  return await AxiosInstance.patch(`${BASE_URL}/my-profile`, payload);
 };
 
 

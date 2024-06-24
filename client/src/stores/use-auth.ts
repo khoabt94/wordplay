@@ -2,7 +2,7 @@ import { COOKIE_KEY } from '@/constants';
 import { User } from '@/interfaces';
 import { create } from 'zustand';
 import Cookies from 'js-cookie'
-import { getInfoMe, refreshToken } from '@/services';
+import { getMyProfile, refreshToken } from '@/services';
 
 type IAuthStore = {
   user: User.Detail | null
@@ -36,7 +36,7 @@ export const useAuthStore = create<IAuthStore>((set, get) => ({
   },
   getUser: async () => {
     try {
-      const res = await getInfoMe();
+      const res = await getMyProfile();
       set({ user: res.user })
     } catch (error) {
       ///empty
