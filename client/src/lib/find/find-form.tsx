@@ -49,7 +49,7 @@ export default function FindForm() {
     return <div className="grid grid-cols-2 mt-4 gap-4">
         <Select
             label="Game Mode"
-            className="text-xl"
+            className="text-xl disabled:bg-white"
             variant='faded'
             multiple={false}
             selectedKeys={[form.watch('match_mode')]}
@@ -57,6 +57,7 @@ export default function FindForm() {
                 if (typeof keys === 'string') return
                 form.setValue('match_mode', getFirstValueFromSet(keys) as MatchMode)
             }}
+            isDisabled={isFindingMatch}
 
         >
             {MatchModeOption.map(option => (<SelectItem key={option.value}>
@@ -74,6 +75,7 @@ export default function FindForm() {
                 if (typeof keys === 'string') return
                 form.setValue('match_language', getFirstValueFromSet(keys) as MatchLanguage)
             }}
+            isDisabled={isFindingMatch}
         >
             {MatchLanguageOption.map(option => (<SelectItem key={option.value}>
                 {option.label}

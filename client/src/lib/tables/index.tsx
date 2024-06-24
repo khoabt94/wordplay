@@ -6,6 +6,7 @@ import { useEffect, useMemo } from "react";
 import { RefreshCw } from 'lucide-react';
 import { useToast } from "@/hooks/utils";
 import { ClientToServerEventsKeys, ServerToClientEventsKeys } from "@/constants";
+import AppLoading from "@/components/common/app-loading";
 
 export default function Tables() {
     const { isFindingMatch } = useStateMatch()
@@ -47,8 +48,9 @@ export default function Tables() {
                     <Button
                         type="button"
                         variant="ghost"
-                        className=" bg-gray-900 !w-10 min-w-0 h-10 px-0 flex justify-center"
+                        className=" bg-gray-900 !w-10 min-w-0 h-10 px-0 flex justify-center disabled:cursor-not-allowed"
                         onClick={() => refetch()}
+                        isDisabled={isFindingMatch}
                     >
                         <RefreshCw />
                     </Button>
@@ -59,7 +61,7 @@ export default function Tables() {
                 <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
                     {tables.map((table) => <Table key={table.table_id} table={table} onClickJoin={() => handleJoinSpecificTable(table.table_id)} />)}
                 </div>
-                {isFindingMatch ? <div className="absolute top-0 bottom-0 left-0 right-0 backdrop-blur-2xl bg-black/50 z-50"></div> : null}
+                {isFindingMatch ? <div className="absolute inset-0 rounded-xl backdrop-blur-2xl z-50"><AppLoading className="bg-transparent h-full" /></div> : null}
 
             </ScrollShadow>
         </div>

@@ -1,8 +1,13 @@
+import { cn } from '@/utils/cn'
 import './app-loading.styles.css'
 
-export default function AppLoading() {
+type Props = {
+    className?: string
+}
+
+export default function AppLoading({ className = '' }: Props) {
     return (
-        <div className="h-screen w-full flex items-center justify-center bg-black">
+        <div className={cn(" w-full flex items-center justify-center bg-black", className)}>
             <div className="wave" />
             <div className="wave" />
             <div className="wave" />

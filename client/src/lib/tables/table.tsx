@@ -28,18 +28,14 @@ export default function TableItem({ table, onClickJoin }: Props) {
             </Button>
             <div className="relative  w-full ">
                 <div className="absolute -inset-[1px] bg-gradient-to-r from-[#FB2576] to-violet-600 rounded-lg blur opacity-0 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-                <div className="relative flex-row pt-12 p-4 h-[100px] bg-gray-800 ring-1 ring-gray-900/5 rounded-lg leading-none flex items-center space-x-6">
-                    <div className="w-[40%] flex-shrink-0  text-center">
-                        <p className="font-bold">Khoa Tien Bui</p>
-                    </div>
-                    <Divider orientation="vertical" />
-                    <div className="w-[10%] flex-shrink-0  text-center">
+                <div className="relative pt-12 p-4 bg-gray-800 ring-1 ring-gray-900/5 rounded-lg leading-none items-center grid grid-cols-[1.5fr_1fr_1fr] divide-x-1 border-gray-600">
+                    <p className="font-bold truncate flex-shrink-0  text-left">Khoa Tien Bui</p>
+                    <div className="flex-shrink-0  text-center flex justify-center items-center h-full border-inherit">
                         <UserElo
                             user={user}
                         />
                     </div>
-                    <Divider orientation="vertical" />
-                    <div className="flex-1 text-xs leading-loose text-right">
+                    <div className="text-xs leading-loose text-right  border-inherit">
                         <p>{MatchModeOption.find(option => option.value === match_mode)?.label}</p>
                         <p>{MatchLanguageOption.find(option => option.value === match_language)?.label}</p>
                     </div>

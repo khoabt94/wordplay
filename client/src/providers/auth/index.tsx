@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    if (isFetchingUser) return <AppLoading />
+    if (isFetchingUser) return <AppLoading className="h-screen" />
 
     return children
 }
