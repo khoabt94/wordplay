@@ -1,10 +1,10 @@
 export enum ServerToClientEventsKeys {
     unauthenticated = 'unauthenticated',
     create_table = 'create_table',
-    cancel_match = 'cancel_match',
+    cancel_find_match = 'cancel_find_match',
     join_specific_table_error = 'join_specific_table_error',
     number_users_online = 'number_users_online',
-    joining_match = 'joining_match',
+    found_match = 'found_match',
     disconnect = 'disconnect',
 
     // match
@@ -16,12 +16,14 @@ export enum ServerToClientEventsKeys {
 export enum ClientToServerEventsKeys {
     authenticate = 'authenticate',
     find_match = 'find_match',
-    cancel_match = 'cancel_match',
+    cancel_find_match = 'cancel_find_match',
+    cancel_found_match = 'cancel_found_match',
+    joining_match = 'joining_match',
     join_specific_table = 'join_specific_table',
     disconnect = 'disconnect',
 
     // match
-    joined_match = 'joined_match',
+    accept_match = 'accept_match',
     answer = 'answer',
     time_out = 'time_out'
 }

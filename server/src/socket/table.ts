@@ -61,7 +61,9 @@ class Tables {
         const matchId = this.tables[findTableIndex].table_id
         socket.join(matchId)
 
-        io.to(matchId).emit(ServerToClientEventsKeys.joining_match, { matchId })
+        // io.to(matchId).emit(ServerToClientEventsKeys.joining_match, { matchId })
+        io.to(matchId).emit(ServerToClientEventsKeys.found_match, { table: this.tables[findTableIndex] })
+
     }
 
 }

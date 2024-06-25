@@ -1,20 +1,48 @@
 
 import { siteConfig } from '@/configs/site';
-import { QUERY_KEY, ServerToClientEventsKeys } from '@/constants';
-import { useHandleRouter } from '@/hooks/utils';
+import { ClientToServerEventsKeys, QUERY_KEY, ServerToClientEventsKeys } from '@/constants';
+import { useHandleRouter, useOpenModal } from '@/hooks/utils';
 import Tables from '@/lib/tables';
-import { useSocketStore, useStateMatch } from '@/stores';
+import { useAuthStore, useSocketStore, useStateMatch } from '@/stores';
 import { useQueryClient } from '@tanstack/react-query';
 import { Suspense, useEffect } from 'react';
 import FindForm from '@/lib/find/find-form';
 import FriendsList from '@/lib/friends';
 import { Table } from '@/interfaces';
+import MatchFoundModal from '@/components/modal/match-found-modal';
 
 export default function FindMatchPage() {
   const { socket } = useSocketStore()
   const queryClient = useQueryClient()
   const { startFindingMatch, endFindingMatch, setTableId } = useStateMatch()
   const { navigate } = useHandleRouter()
+  const { open } = useOpenModal()
+  const { user } = useAuthStore()
+
+  const emitSocketAcceptMatch = (table: Table.Detail) => {
+    if (!socket) return;
+    socket.emit(ClientToServerEventsKeys.accept_match, {
+      tableId: table.table_id
+    })
+    endFindingMatch()
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY.TABLE.GET_TABLES],
+      refetchType: 'all'
+    })
+    navigate(siteConfig.paths.match(table.table_id))
+  }
+
+  const emitSocketCancelMatch = (table: Table.Detail) => {
+    if (!socket) return;
+    socket.emit(ClientToServerEventsKeys.cancel_found_match, {
+      tableId: table.table_id
+    })
+    endFindingMatch()
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY.TABLE.GET_TABLES],
+      refetchType: 'all'
+    })
+  }
 
   useEffect(() => {
     if (!socket) return;
@@ -22,20 +50,25 @@ export default function FindMatchPage() {
       setTableId(table.table_id)
       startFindingMatch()
     })
-    socket.on(ServerToClientEventsKeys.joining_match, ({ matchId }) => {
-      navigate(siteConfig.paths.match(matchId))
-      endFindingMatch()
 
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.TABLE.GET_TABLES],
-        refetchType: 'all'
+    socket.on(ServerToClientEventsKeys.found_match, ({ table }) => {
+      if (!user) return;
+      const opponent = table.players.find(p => p._id !== user._id)
+      const owner = table.players.find(p => p._id === user._id)
+      open(MatchFoundModal, {
+        opponent,
+        user: owner,
+        onClose: () => emitSocketCancelMatch(table),
+        onSubmit: () => emitSocketAcceptMatch(table)
       })
     })
 
 
+
+
     return () => {
-      socket.off(ServerToClientEventsKeys.create_table, () => console.log('create-table'));
-      socket.off(ServerToClientEventsKeys.joining_match, () => console.log('join-table'));
+      socket.off(ServerToClientEventsKeys.create_table, () => console.log('create_table'));
+      socket.off(ServerToClientEventsKeys.found_match, () => console.log('found_match'));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);

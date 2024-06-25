@@ -39,7 +39,7 @@ export default function FindForm() {
 
     const onCancelFindMatch = () => {
         if (!socket || !tableId) return
-        socket.emit(ClientToServerEventsKeys.cancel_match, {
+        socket.emit(ClientToServerEventsKeys.cancel_find_match, {
             tableId
         })
         clearTableId()

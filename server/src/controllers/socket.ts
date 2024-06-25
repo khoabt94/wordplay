@@ -72,6 +72,25 @@ const disconnect = (socket: CustomSocket) => {
     CurrentUsersOnline.removeUser(socket.id)
 }
 
+const acceptMatch = async ({ tableId, userId }: { tableId: string, userId: string }) => {
+    const findExistingMatchIndex = CurrentMatches.findMatch(tableId)
+    if (findExistingMatchIndex === -1) {
+        const findTable = CurrentTables.findTable(tableId)
+        if (!findTable) return
+        const match = new Match({
+            match_id: tableId,
+            match_language: findTable.match_language,
+            match_mode: findTable.match_mode,
+            players: findTable.players
+        })
+        CurrentMatches.createMatch(match)
+    } else {
+        const userJoin = CurrentUsersOnline.findUser(userId)
+        if (!userJoin) return
+        CurrentMatches.matches[findExistingMatchIndex].matchStart()
+    }
+}
+
 
 const joinedMatch = async ({ match_id, user_id }: { match_id: string, user_id: string }) => {
     const findExistingMatchIndex = CurrentMatches.findMatch(match_id)
@@ -115,5 +134,6 @@ export const socketControllers = {
     disconnect,
     joinedMatch,
     answer,
-    timeout
+    timeout,
+    acceptMatch
 }

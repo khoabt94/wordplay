@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import AnswerBox from "./components/answer-box";
 import Histories from "./components/histories";
-import PlayerList from "./components/player-list";
+import MemoizedPlayerList from "@/components/common/player-list";
 
 const MAX_TIMER = 10
 
@@ -131,7 +131,7 @@ export default function MatchPage() {
     if (!user || !opponent) return;
     return (
         <div className="flex flex-col gap-y-5 px-4 justify-center items-center h-full pt-10">
-            <PlayerList opponent={opponent} user={user} />
+            <MemoizedPlayerList opponent={opponent} user={user} />
             <h3 className="capitalize text-3xl font-bold mb-4">{word}</h3>
             {(timer && isYourTurn) ? (
                 <div className=" bg-black z-20 w-full flex justify-center">

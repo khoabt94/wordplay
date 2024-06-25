@@ -31,12 +31,16 @@ export default (io: CustomSocketServer) => {
             socketControllers.findMatch(socket, data)
         });
 
-        socket.on(ClientToServerEventsKeys.cancel_match, (data) => {
+        socket.on(ClientToServerEventsKeys.cancel_find_match, (data) => {
             socketControllers.cancelMatch(socket, data)
         });
 
         socket.on(ClientToServerEventsKeys.join_specific_table, (data) => {
             socketControllers.joinSpecificTable(socket, data)
+        });
+
+        socket.on(ClientToServerEventsKeys.accept_match, (data) => {
+            socketControllers.acceptMatch(data)
         });
 
         socket.on(ClientToServerEventsKeys.joined_match, (data) => {
