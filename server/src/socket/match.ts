@@ -9,24 +9,23 @@ import { User } from "../models";
 import { recalculateElo } from "../utils/calculate-elo";
 
 export class Match {
-    match_mode: MatchMode
-    match_language: MatchLanguage
-    players: IUserOnline[]
-    match_id: string
-    history: IHistory[]
-    result: IResult | null
+    detail: IMatch
     dictionary: string[] | null
     turn: Schema.Types.ObjectId
+    player_join: Schema.Types.ObjectId[]
 
     constructor({ match_id, match_language, match_mode, players }: Omit<IMatch, 'history' | 'result'>) {
-        this.match_id = match_id
-        this.players = players
-        this.match_mode = match_mode
-        this.match_language = match_language
-        this.history = []
-        this.result = null
-        this.dictionary = null;
+        this.detail = {
+            match_id,
+            players,
+            match_mode,
+            match_language,
+            history: [],
+            result: null,
+        }
+        this.dictionary = null
         this.turn = players[0].user._id
+        this.player_join = []
     }
 
     initDictionary() {
@@ -39,15 +38,23 @@ export class Match {
     }
 
     generateMatchResponse(withPlayersId: boolean) {
+        const { history, match_id, match_language, match_mode, players, result } = this.detail
         const matchResponse: IMatchResponse = {
-            history: this.history,
-            match_id: this.match_id,
-            match_language: this.match_language,
-            match_mode: this.match_mode,
-            players: withPlayersId ? this.players.map(player => player.user._id) : this.players.map(player => player.user),
-            result: this.result,
+            history,
+            match_id,
+            match_language,
+            match_mode,
+            players: withPlayersId ? players.map(player => player.user._id) : players.map(player => player.user),
+            result,
         }
         return matchResponse
+    }
+
+    joinedMatch(user_id: Schema.Types.ObjectId) {
+        this.player_join.push(user_id)
+        if (this.player_join.length === 2) {
+            this.matchStart()
+        }
     }
 
     matchStart() {
@@ -60,7 +67,7 @@ export class Match {
             isValid: true,
             player: null
         })
-        io.to(this.match_id).emit(ServerToClientEventsKeys.match_start, ({ match: this.generateMatchResponse(false), word: randomWord, user_id_turn: String(this.turn) }))
+        io.to(this.detail.match_id).emit(ServerToClientEventsKeys.match_start, ({ match: this.generateMatchResponse(false), word: randomWord, user_id_turn: String(this.turn) }))
     }
 
     checkAnswer({ word, user_id }: { word: string, user_id: string }) {
@@ -69,7 +76,7 @@ export class Match {
         // const findWord = this.dictionary[Math.floor(Math.random() * this.dictionary.length)]
         let opponent!: IUserOnline;
         let owner!: IUserOnline;
-        this.players.forEach(player => {
+        this.detail.players.forEach(player => {
             if (player.user_id !== user_id) opponent = player
             else owner = player
         })
@@ -95,7 +102,7 @@ export class Match {
     timeout({ user_id }: { user_id: string }) {
         let loser!: Schema.Types.ObjectId;
         let winner!: Schema.Types.ObjectId;
-        this.players.forEach(player => {
+        this.detail.players.forEach(player => {
             if (player.user_id !== user_id) winner = player.user._id
             else loser = player.user._id
         })
@@ -106,8 +113,8 @@ export class Match {
     }
 
     pushHistory(history: Omit<IHistory, 'order'>) {
-        const nextOrder = this.history.length
-        this.history.push({
+        const nextOrder = this.detail.history.length
+        this.detail.history.push({
             ...history,
             order: nextOrder,
         })
@@ -115,7 +122,7 @@ export class Match {
 
 
     async endMatch(result: { winner: Schema.Types.ObjectId, loser: Schema.Types.ObjectId }) {
-        this.result = result
+        this.detail.result = result
 
         // save match to db
         const newMatch = this.generateMatchResponse(true)
@@ -131,7 +138,7 @@ export class Match {
         await findWinner.save()
         await findLoser.save()
 
-        io.to(this.match_id).emit(ServerToClientEventsKeys.match_end, ({
+        io.to(this.detail.match_id).emit(ServerToClientEventsKeys.match_end, ({
             match: this.generateMatchResponse(false)
         }))
     }
@@ -151,7 +158,7 @@ class Matches {
 
 
     findMatch(match_id: string) {
-        const findMatch = this.matches.findIndex(match => match.match_id === match_id)
+        const findMatch = this.matches.find(match => match.detail.match_id === match_id)
         return findMatch;
     }
 

@@ -24,12 +24,14 @@ export default function FindMatchPage() {
     socket.emit(ClientToServerEventsKeys.accept_match, {
       tableId: table.table_id
     })
-    endFindingMatch()
-    queryClient.invalidateQueries({
-      queryKey: [QUERY_KEY.TABLE.GET_TABLES],
-      refetchType: 'all'
-    })
-    navigate(siteConfig.paths.match(table.table_id))
+    // set UI to wait for other player acceptance
+
+    // endFindingMatch()
+    // queryClient.invalidateQueries({
+    //   queryKey: [QUERY_KEY.TABLE.GET_TABLES],
+    //   refetchType: 'all'
+    // })
+    // navigate(siteConfig.paths.match(table.table_id))
   }
 
   const emitSocketCancelMatch = (table: Table.Detail) => {

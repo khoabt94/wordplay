@@ -5,6 +5,8 @@ export enum ServerToClientEventsKeys {
     join_specific_table_error = 'join_specific_table_error',
     number_users_online = 'number_users_online',
     found_match = 'found_match',
+    joining_match = 'joining_match',
+    join_match_error = 'join_match_error',
     disconnect = 'disconnect',
 
     // match

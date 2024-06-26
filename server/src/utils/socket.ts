@@ -40,11 +40,11 @@ export default (io: CustomSocketServer) => {
         });
 
         socket.on(ClientToServerEventsKeys.accept_match, (data) => {
-            socketControllers.acceptMatch(data)
+            socketControllers.acceptMatch(socket, data)
         });
 
         socket.on(ClientToServerEventsKeys.joined_match, (data) => {
-            socketControllers.joinedMatch(data)
+            socketControllers.joinedMatch(socket, data)
         });
 
         socket.on(ClientToServerEventsKeys.answer, (data) => {

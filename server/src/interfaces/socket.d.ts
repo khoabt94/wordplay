@@ -15,6 +15,8 @@ export interface ServerToClientEvents {
     [ServerToClientEventsKeys.join_specific_table_error]: (_data: { message: string }) => void;
     [ServerToClientEventsKeys.number_users_online]: (_data: { users: IUser[] }) => void;
     [ServerToClientEventsKeys.found_match]: (_data: { table: Table }) => void;
+    [ServerToClientEventsKeys.joining_match]: (_data: { table: Table }) => void;
+    [ServerToClientEventsKeys.join_match_error]: (_data: { message: string }) => void;
     [ServerToClientEventsKeys.disconnect]: () => void;
     [ServerToClientEventsKeys.match_start]: (_data: { match: IMatchResponse, word: string, user_id_turn: string }) => void;
     [ServerToClientEventsKeys.opponent_answer]: (word: string) => void;

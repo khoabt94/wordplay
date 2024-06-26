@@ -21,6 +21,7 @@ export interface IMatch {
     match_id: string
     history: IHistory[]
     result: IResult | null
+
 }
 
 export interface IMatchResponse {
