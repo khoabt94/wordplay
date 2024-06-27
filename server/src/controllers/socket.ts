@@ -1,11 +1,11 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import mongoose from 'mongoose';
 import { DEFAULT_USER_INFO_SELECT_FIELD, MatchLanguage, MatchMode, ServerToClientEventsKeys } from "../constants";
 import { User } from "../models";
 import CurrentMatches, { Match } from "../socket/match";
 import CurrentTables, { Table } from "../socket/table";
 import CurrentUsersOnline, { UserOnline } from "../socket/user-online";
 import { CustomSocket } from "../utils/socket";
+import { io } from "../../index";
 
 const authenticate = async (socket: CustomSocket, { access_token }: { access_token: string }) => {
     const decoded = jwt.verify(access_token, process.env.JWT_SECRET_KEY as string) as JwtPayload
@@ -39,23 +39,27 @@ const findMatch = async (socket: CustomSocket, { match_mode, match_language, use
         const newTable = new Table({
             match_language,
             match_mode,
-            players: [newUserOnline]
+            players: []
         })
         newTable.joinTable(newUserOnline)
         CurrentTables.createTable(newTable)
         socket.join(newTable.detail.table_id)
-        socket.emit(ServerToClientEventsKeys.create_table, newTable)
+        socket.emit(ServerToClientEventsKeys.create_table, newTable.detail)
     } else {
-        const findTable = CurrentTables.findTable(randomTable.detail.table_id)
-        if (!findTable) return;
-        socket.join(findTable.detail.table_id)
-        findTable.joinTable(newUserOnline)
+        socket.join(randomTable.detail.table_id)
+        randomTable.joinTable(newUserOnline)
     }
 }
 
-const cancelMatch = (socket: CustomSocket, { tableId }: { tableId: string }) => {
+const cancelFindMatch = (socket: CustomSocket, { tableId }: { tableId: string }) => {
     CurrentTables.deleteTable(tableId)
     socket.leave(tableId)
+}
+
+const cancelFoundMatch = ({ tableId }: { tableId: string }) => {
+    io.to(tableId).emit(ServerToClientEventsKeys.match_found_cancel)
+    io.in(tableId).socketsLeave(tableId)
+    CurrentTables.deleteTable(tableId)
 }
 
 const joinSpecificTable = (socket: CustomSocket, { tableId, user_id }: { tableId: string, user_id: string }) => {
@@ -75,6 +79,15 @@ const joinSpecificTable = (socket: CustomSocket, { tableId, user_id }: { tableId
 }
 
 const disconnect = (socket: CustomSocket) => {
+    const findUser = CurrentUsersOnline.findUserBySocketId(socket.id)
+    if (!findUser) return
+    const findTable = CurrentTables.findTableOfUser(findUser.user_id)
+    if (findTable) {
+        timeout({
+            match_id: findTable.detail.table_id,
+            user_id: findUser.user_id
+        })
+    }
     CurrentUsersOnline.removeUser(socket.id)
 }
 
@@ -113,18 +126,20 @@ const answer = async ({ match_id, ...rest }: { match_id: string, word: string, u
 const timeout = async ({ match_id, user_id }: { match_id: string, user_id: string }) => {
     const findMatch = CurrentMatches.findMatch(match_id)
     if (findMatch) {
-        findMatch.timeout({ user_id })
+        await findMatch.timeout({ user_id })
+        CurrentMatches.deleteMatch(match_id)
     }
 }
 
 export const socketControllers = {
     authenticate,
     findMatch,
-    cancelMatch,
+    cancelFindMatch,
     joinSpecificTable,
     disconnect,
     joinedMatch,
     answer,
     timeout,
-    acceptMatch
+    acceptMatch,
+    cancelFoundMatch
 }

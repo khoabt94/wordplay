@@ -38,6 +38,11 @@ class UsersOnline {
         return checkExist || null
     }
 
+    findUserBySocketId(socket_id: string) {
+        const checkExist = this.users.find(u => u.socket_id === socket_id)
+        return checkExist || null
+    }
+
     removeUser(socket_id: string) {
         this.users = this.users.filter(u => u.socket_id !== socket_id)
         this.emitUsersOnline()

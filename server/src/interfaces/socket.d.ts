@@ -5,13 +5,14 @@ import { IUser } from "./server/src/models";
 import { Table } from "./server/src/socket/table";
 import { IMatch, IMatchEndResponse } from "./match";
 import { Match } from "../socket/match";
+import { ITable } from "../socket/table";
 
 
 
 export interface ServerToClientEvents {
     [ServerToClientEventsKeys.unauthenticated]: () => void
-    [ServerToClientEventsKeys.create_table]: (table: Table) => void;
-    [ServerToClientEventsKeys.cancel_find_match]: (_data: { tableId: string }) => void;
+    [ServerToClientEventsKeys.create_table]: (table: ITable) => void;
+    [ServerToClientEventsKeys.match_found_cancel]: () => void;
     [ServerToClientEventsKeys.join_specific_table_error]: (_data: { message: string }) => void;
     [ServerToClientEventsKeys.number_users_online]: (_data: { users: IUser[] }) => void;
     [ServerToClientEventsKeys.found_match]: (_data: { table: Table }) => void;

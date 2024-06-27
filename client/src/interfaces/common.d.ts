@@ -25,6 +25,7 @@ export namespace Common {
     onClose?: () => void;
     onSubmit?: (data?: any) => void;
     onCancel?: () => void;
+    onConfirm?: () => void;
     [key: string]: any;
   }
 }

@@ -32,7 +32,7 @@ export default (io: CustomSocketServer) => {
         });
 
         socket.on(ClientToServerEventsKeys.cancel_find_match, (data) => {
-            socketControllers.cancelMatch(socket, data)
+            socketControllers.cancelFindMatch(socket, data)
         });
 
         socket.on(ClientToServerEventsKeys.join_specific_table, (data) => {
@@ -41,6 +41,10 @@ export default (io: CustomSocketServer) => {
 
         socket.on(ClientToServerEventsKeys.accept_match, (data) => {
             socketControllers.acceptMatch(socket, data)
+        });
+
+        socket.on(ClientToServerEventsKeys.cancel_found_match, (data) => {
+            socketControllers.cancelFoundMatch(data)
         });
 
         socket.on(ClientToServerEventsKeys.joined_match, (data) => {

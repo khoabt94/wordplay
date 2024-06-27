@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import AnswerBox from "./components/answer-box";
 import Histories from "./components/histories";
 import MemoizedPlayerList from "@/components/common/player-list";
+import ConfirmModal from "@/components/modal/confirm-modal";
 
 const MAX_TIMER = 10
 
@@ -32,6 +33,10 @@ export default function MatchPage() {
             const nextOrder = prev.length
             return [...prev, { ...newHis, order: nextOrder }]
         })
+    }
+
+    const onSocketMatchError = () => {
+        navigate(siteConfig.paths.findMatch())
     }
 
     const onSocketMatchStart: ServerToClientEvents[ServerToClientEventsKeys.match_start] = ({ match, word, user_id_turn }) => {
@@ -109,10 +114,12 @@ export default function MatchPage() {
         socket.on(ServerToClientEventsKeys.match_start, onSocketMatchStart)
         socket.on(ServerToClientEventsKeys.opponent_answer, onSocketOpponentAnswer)
         socket.on(ServerToClientEventsKeys.match_end, onSocketMatchEnd)
+        socket.on(ServerToClientEventsKeys.join_match_error, onSocketMatchError)
 
         return () => {
             socket.off(ServerToClientEventsKeys.match_start, () => console.log('match_start'))
             socket.off(ServerToClientEventsKeys.opponent_answer, () => console.log('opponent_answer'))
+
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [socket, answerRef]);

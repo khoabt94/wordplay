@@ -14,9 +14,9 @@ export default function TimerBar({ value, max, label }: Props) {
             maxValue={max}
             color="success"
             label={label}
-            className="max-w-md"
+            className="max-w-md text-white"
             classNames={{
-                labelWrapper: 'flex justify-center text-center w-full'
+                labelWrapper: 'flex justify-center text-center w-full text-inherit'
             }
             }
         />

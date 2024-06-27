@@ -70,7 +70,7 @@ export class Match {
         io.to(this.detail.match_id).emit(ServerToClientEventsKeys.match_start, ({ match: this.generateMatchResponse(false), word: randomWord, user_id_turn: String(this.turn) }))
     }
 
-    checkAnswer({ word, user_id }: { word: string, user_id: string }) {
+    async checkAnswer({ word, user_id }: { word: string, user_id: string }) {
         if (!this.dictionary) return;
         const findWord = this.dictionary.find(w => w === word)
         // const findWord = this.dictionary[Math.floor(Math.random() * this.dictionary.length)]
@@ -87,7 +87,7 @@ export class Match {
         })
         if (!findWord) {
             if (opponent && owner) {
-                this.endMatch({
+                await this.endMatch({
                     loser: owner.user._id,
                     winner: opponent.user._id,
                 })
@@ -99,14 +99,14 @@ export class Match {
 
     }
 
-    timeout({ user_id }: { user_id: string }) {
+    async timeout({ user_id }: { user_id: string }) {
         let loser!: Schema.Types.ObjectId;
         let winner!: Schema.Types.ObjectId;
         this.detail.players.forEach(player => {
             if (player.user_id !== user_id) winner = player.user._id
             else loser = player.user._id
         })
-        this.endMatch({
+        await this.endMatch({
             loser,
             winner
         })
@@ -156,6 +156,9 @@ class Matches {
         this.matches.push(match)
     }
 
+    deleteMatch(match_id: string) {
+        this.matches = this.matches.filter(table => table.detail.match_id !== match_id)
+    }
 
     findMatch(match_id: string) {
         const findMatch = this.matches.find(match => match.detail.match_id === match_id)

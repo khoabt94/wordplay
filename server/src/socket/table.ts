@@ -8,7 +8,7 @@ import CurrentMatches, { Match } from "./match";
 
 const { ObjectId } = mongoose.Types;
 
-interface ITable {
+export interface ITable {
     table_id: string
     players: IUserOnline[]
     match_mode: MatchMode
@@ -71,12 +71,16 @@ class Tables {
     }
 
     findTable(table_id: string) {
-        const findTable = this.tables.find(table => table.detail.table_id === table_id)
-        return findTable ? findTable : null;
+        return this.tables.find(table => table.detail.table_id === table_id)
+    }
+
+    findTableOfUser(user_id: string) {
+        return this.tables.find(table => table.detail.players.find(p => p.user_id === user_id))
     }
 
     findRandomTable({ match_language, match_mode }: Omit<ITable, 'table_id' | 'players' | 'player_acceptance'>) {
         const availableAndSuitableTable = this.tables.filter(table => table.detail.players.length === 1 && table.detail.match_language === match_language && table.detail.match_mode === match_mode)
+
         if (availableAndSuitableTable.length === 0) return null;
         else return availableAndSuitableTable[Math.floor(Math.random() * availableAndSuitableTable.length)];
     }

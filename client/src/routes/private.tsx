@@ -1,5 +1,5 @@
 import { siteConfig } from '@/configs/site';
-import FindMatchPage from '@/pages/find/page';
+import FindMatchPage from '@/pages/find';
 import HomePage from '@/pages/home';
 import MatchPage from '@/pages/match';
 import MyProfilePage from '@/pages/my-profile';
