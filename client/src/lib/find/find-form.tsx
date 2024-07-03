@@ -16,22 +16,21 @@ export default function FindForm() {
     const { user } = useAuthStore()
     const form = useForm({
         defaultValues: {
-            match_mode: MatchMode.FREESTYLE,
             match_language: MatchLanguage.VN
         }
     })
 
+
     const onFindMatch = () => {
         if (!socket || !user) return
-        const { match_language, match_mode } = form.getValues()
+        const { match_language } = form.getValues()
 
-        if (!match_language || !match_mode) {
-            toastError('Please choose your match mode/language')
+        if (!match_language) {
+            toastError('Please choose your match language')
             return;
         }
         startFindingMatch()
         socket.emit(ClientToServerEventsKeys.find_match, {
-            match_mode,
             match_language,
             user_id: user?._id || '',
         })
@@ -48,24 +47,6 @@ export default function FindForm() {
 
     return <div className="grid grid-cols-2 mt-4 gap-4">
         <Select
-            label="Game Mode"
-            className="text-xl disabled:bg-white"
-            variant='faded'
-            multiple={false}
-            selectedKeys={[form.watch('match_mode')]}
-            onSelectionChange={(keys: Selection) => {
-                if (typeof keys === 'string') return
-                form.setValue('match_mode', getFirstValueFromSet(keys) as MatchMode)
-            }}
-            isDisabled={isFindingMatch}
-
-        >
-            {MatchModeOption.map(option => (<SelectItem key={option.value}>
-                {option.label}
-            </SelectItem>))}
-
-        </Select>
-        <Select
             label="Game Language"
             className="text-xl"
             variant='faded'
@@ -76,14 +57,21 @@ export default function FindForm() {
                 form.setValue('match_language', getFirstValueFromSet(keys) as MatchLanguage)
             }}
             isDisabled={isFindingMatch}
+            renderValue={(items) => <p>{items.at(0)?.rendered}</p>}
         >
             {MatchLanguageOption.map(option => (<SelectItem key={option.value}>
-                {option.label}
+                <div className="flex gap-x-2 items-center">
+                    <img src={option.icon} alt={option.label} width={20} />
+                    <p>
+                        {option.label}
+                    </p>
+                </div>
+
             </SelectItem>))}
 
         </Select>
         <Button
-            className='text-base font-bold uppercase col-span-2 disabled:bg-foreground-400'
+            className='text-base font-bold uppercase disabled:bg-foreground-400 h-full'
             variant='solid'
             color={isFindingMatch ? 'default' : 'primary'}
             radius="sm"

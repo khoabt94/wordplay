@@ -35,7 +35,7 @@ export default function UserControl() {
             </DropdownTrigger>
             <DropdownMenu aria-label="Static Actions">
                 <DropdownItem key="account">
-                    <Link to={siteConfig.paths.myProfile()}>
+                    <Link to={siteConfig.paths.myProfile()} className="w-full block">
                         My profile
                     </Link>
                 </DropdownItem>

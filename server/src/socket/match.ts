@@ -14,11 +14,10 @@ export class Match {
     turn: Schema.Types.ObjectId
     player_join: Schema.Types.ObjectId[]
 
-    constructor({ match_id, match_language, match_mode, players }: Omit<IMatch, 'history' | 'result'>) {
+    constructor({ match_id, match_language, players }: Omit<IMatch, 'history' | 'result'>) {
         this.detail = {
             match_id,
             players,
-            match_mode,
             match_language,
             history: [],
             result: null,
@@ -38,12 +37,11 @@ export class Match {
     }
 
     generateMatchResponse(withPlayersId: boolean) {
-        const { history, match_id, match_language, match_mode, players, result } = this.detail
+        const { history, match_id, match_language, players, result } = this.detail
         const matchResponse: IMatchResponse = {
             history,
             match_id,
             match_language,
-            match_mode,
             players: withPlayersId ? players.map(player => player.user._id) : players.map(player => player.user),
             result,
         }
@@ -121,22 +119,33 @@ export class Match {
     }
 
 
-    async endMatch(result: { winner: Schema.Types.ObjectId, loser: Schema.Types.ObjectId }) {
-        this.detail.result = result
+    async endMatch({ loser, winner }: { winner: Schema.Types.ObjectId, loser: Schema.Types.ObjectId }) {
+        // recalculate elo
+        const findWinner = await User.findById(winner)
+        const findLoser = await User.findById(loser)
+        if (!findWinner || !findLoser) return
+        const { winner_elo, loser_elo } = recalculateElo(findWinner.elo, findLoser.elo)
+        findWinner.elo += winner_elo
+        findLoser.elo += loser_elo
+        await findWinner.save()
+        await findLoser.save()
+
+        this.detail.result = {
+            winner: {
+                user_id: winner,
+                elo: winner_elo
+            },
+            loser: {
+                user_id: loser,
+                elo: loser_elo
+            },
+        }
 
         // save match to db
         const newMatch = this.generateMatchResponse(true)
         await MatchModel.create(newMatch)
 
-        // recalculate elo
-        const findWinner = await User.findById(result.winner)
-        const findLoser = await User.findById(result.loser)
-        if (!findWinner || !findLoser) return
-        const { winner_elo, loser_elo } = recalculateElo(findWinner.elo, findLoser.elo)
-        findWinner.elo = winner_elo
-        findLoser.elo = loser_elo
-        await findWinner.save()
-        await findLoser.save()
+
 
         io.to(this.detail.match_id).emit(ServerToClientEventsKeys.match_end, ({
             match: this.generateMatchResponse(false)

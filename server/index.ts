@@ -5,7 +5,7 @@ import initDb from './src/utils/db';
 import initErrorHandler from './src/utils/error-handler';
 import initMiddlewares from './src/utils/middlewares';
 import initRoutes from './src/utils/routes';
-import initSocket from './src/utils/socket';
+import initSocket from './src/socket';
 
 const app = express();
 

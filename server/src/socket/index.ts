@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io";
 import { ClientToServerEventsKeys, ServerToClientEventsKeys } from "../constants";
 import { socketControllers } from "../controllers";
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "../interfaces/socket";
-import CurrentUsersOnline from "../socket/user-online";
+import CurrentUsersOnline from "./user-online";
 
 export type CustomSocketServer = Server<
     ClientToServerEvents,

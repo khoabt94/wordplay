@@ -11,7 +11,6 @@ const { ObjectId } = mongoose.Types;
 export interface ITable {
     table_id: string
     players: IUserOnline[]
-    match_mode: MatchMode
     match_language: MatchLanguage
     player_acceptance: Schema.Types.ObjectId[]
 }
@@ -19,11 +18,10 @@ export interface ITable {
 export class Table {
     detail: ITable
 
-    constructor({ match_language, match_mode, players }: Omit<ITable, 'table_id' | 'player_acceptance'>) {
+    constructor({ match_language, players }: Omit<ITable, 'table_id' | 'player_acceptance'>) {
         this.detail = {
             table_id: uuid(),
             players,
-            match_mode,
             match_language,
             player_acceptance: []
         }
@@ -46,7 +44,6 @@ export class Table {
             const match = new Match({
                 match_id: this.detail.table_id,
                 match_language: this.detail.match_language,
-                match_mode: this.detail.match_mode,
                 players: this.detail.players
             })
             CurrentMatches.createMatch(match)
@@ -78,8 +75,8 @@ class Tables {
         return this.tables.find(table => table.detail.players.find(p => p.user_id === user_id))
     }
 
-    findRandomTable({ match_language, match_mode }: Omit<ITable, 'table_id' | 'players' | 'player_acceptance'>) {
-        const availableAndSuitableTable = this.tables.filter(table => table.detail.players.length === 1 && table.detail.match_language === match_language && table.detail.match_mode === match_mode)
+    findRandomTable({ match_language }: { match_language: ITable['match_language'] }) {
+        const availableAndSuitableTable = this.tables.filter(table => table.detail.players.length === 1 && table.detail.match_language === match_language)
 
         if (availableAndSuitableTable.length === 0) return null;
         else return availableAndSuitableTable[Math.floor(Math.random() * availableAndSuitableTable.length)];

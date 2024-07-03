@@ -27,7 +27,7 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
     [ClientToServerEventsKeys.authenticate]: (_data: { access_token: string }) => void;
-    [ClientToServerEventsKeys.find_match]: (_data: { match_mode: MatchMode, match_language: MatchLanguage, user_id: string }) => void;
+    [ClientToServerEventsKeys.find_match]: (_data: { match_language: MatchLanguage, user_id: string }) => void;
     [ClientToServerEventsKeys.cancel_find_match]: (_data: { tableId: string }) => void;
     [ClientToServerEventsKeys.cancel_found_match]: (_data: { tableId: string }) => void;
     [ClientToServerEventsKeys.accept_match]: (_data: { tableId: string, userId: string }) => void;

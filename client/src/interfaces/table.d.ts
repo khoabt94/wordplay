@@ -6,7 +6,6 @@ export namespace Table {
       user: User.Detail,
       user_id: string
     }[]
-    match_mode: MatchMode
     match_language: MatchLanguage
     table_id: string
   }

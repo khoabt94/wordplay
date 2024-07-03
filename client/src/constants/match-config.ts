@@ -1,3 +1,5 @@
+import { ReactNode } from "react"
+
 export enum MatchMode {
     FREESTYLE = 'freestyle',
     NON_REPEAT = 'non-repeat'
@@ -29,15 +31,18 @@ export const MatchModeOption: IMatchModeOption[] = [
 export type IMatchLanguageOption = {
     value: MatchLanguage
     label: string
+    icon: string
 }
 
 export const MatchLanguageOption: IMatchLanguageOption[] = [
     {
         label: 'VN',
-        value: MatchLanguage.VN
+        value: MatchLanguage.VN,
+        icon: '/vn.png'
     },
     {
         label: 'EN',
-        value: MatchLanguage.EN
+        value: MatchLanguage.EN,
+        icon: '/en.png'
     },
 ]

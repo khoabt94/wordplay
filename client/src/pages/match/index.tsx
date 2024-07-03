@@ -79,7 +79,7 @@ export default function MatchPage() {
 
     const onSocketMatchEnd: ServerToClientEvents[ServerToClientEventsKeys.match_end] = (data) => {
         if (!user) return;
-        const result = data.match.result.winner === user._id ? RESULT_MODAL_TYPE.WINNER : RESULT_MODAL_TYPE.LOSER
+        const result = data.match.result.winner.user_id === user._id ? RESULT_MODAL_TYPE.WINNER : RESULT_MODAL_TYPE.LOSER
         open(ResultModal, {
             result,
             onSubmit: () => navigate(siteConfig.paths.findMatch())

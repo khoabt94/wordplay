@@ -4,7 +4,7 @@ import { User } from "../models";
 import CurrentMatches, { Match } from "../socket/match";
 import CurrentTables, { Table } from "../socket/table";
 import CurrentUsersOnline, { UserOnline } from "../socket/user-online";
-import { CustomSocket } from "../utils/socket";
+import { CustomSocket } from "../socket";
 import { io } from "../../index";
 
 const authenticate = async (socket: CustomSocket, { access_token }: { access_token: string }) => {
@@ -20,7 +20,7 @@ const authenticate = async (socket: CustomSocket, { access_token }: { access_tok
     CurrentUsersOnline.addUser(newUserOnline)
 }
 
-const findMatch = async (socket: CustomSocket, { match_mode, match_language, user_id }: { match_mode: MatchMode, match_language: MatchLanguage, user_id: string }) => {
+const findMatch = async (socket: CustomSocket, { match_language, user_id }: { match_language: MatchLanguage, user_id: string }) => {
     const user = await User.findById(user_id).select(DEFAULT_USER_INFO_SELECT_FIELD)
 
 
@@ -30,7 +30,6 @@ const findMatch = async (socket: CustomSocket, { match_mode, match_language, use
     }
 
     const randomTable = CurrentTables.findRandomTable({
-        match_mode,
         match_language
     })
 
@@ -38,7 +37,6 @@ const findMatch = async (socket: CustomSocket, { match_mode, match_language, use
     if (!randomTable) {
         const newTable = new Table({
             match_language,
-            match_mode,
             players: []
         })
         newTable.joinTable(newUserOnline)

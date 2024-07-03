@@ -15,7 +15,6 @@ export default function FriendsList() {
     useEffect(() => {
         if (!socket) return;
         socket.on(ServerToClientEventsKeys.number_users_online, ({ users }: { users: User.Detail[] }) => {
-            console.log({ users })
             queryClient.setQueryData([QUERY_KEY.USER.GET_USERS_ONLINE], { users })
         })
 

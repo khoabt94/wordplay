@@ -5,11 +5,6 @@ import { MatchLanguage, MatchMode } from "../constants";
 type TMatchModel = Model<IMatchModel, {}, IMatchMethods, IMatchVirtuals>
 
 const MatchSchema = new Schema<IMatchModel, TMatchModel, IMatchMethods, IMatchVirtuals>({
-    match_mode: {
-        type: String,
-        enum: MatchMode,
-        required: [true, 'Please provide match mode'],
-    },
     match_language: {
         type: String,
         enum: MatchLanguage,
@@ -33,12 +28,26 @@ const MatchSchema = new Schema<IMatchModel, TMatchModel, IMatchMethods, IMatchVi
     ],
     result: {
         winner: {
-            type: Schema.ObjectId,
-            ref: 'User',
+            user_id: {
+                type: Schema.ObjectId,
+                ref: 'User',
+            },
+            elo: {
+                type: Number,
+                required: [true, 'Please provide winner elo'],
+                min: [0, 'Winner elo must be greater than 0'],
+            },
         },
         loser: {
-            type: Schema.ObjectId,
-            ref: 'User',
+            user_id: {
+                type: Schema.ObjectId,
+                ref: 'User',
+            },
+            elo: {
+                type: Number,
+                required: [true, 'Please provide winner elo'],
+                max: [0, 'Loser elo must be less than 0'],
+            },
         },
     }
 }, {

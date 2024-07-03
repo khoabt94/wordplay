@@ -11,12 +11,17 @@ export namespace Match {
     }
 
     export interface Result {
-        winner: string
-        loser: string
+        winner: {
+            user_id: string
+            elo: number
+        }
+        loser: {
+            user_id: string
+            elo: number
+        }
     }
 
     export interface Detail {
-        match_mode: MatchMode
         match_language: MatchLanguage
         players: User.Detail[]
         match_id: string

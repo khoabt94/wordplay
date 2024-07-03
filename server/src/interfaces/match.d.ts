@@ -10,12 +10,17 @@ export interface IHistory {
 }
 
 export interface IResult {
-    winner: Schema.Types.ObjectId
-    loser: Schema.Types.ObjectId
+    winner: {
+        user_id: Schema.Types.ObjectId
+        elo: number
+    }
+    loser: {
+        user_id: Schema.Types.ObjectId
+        elo: number
+    }
 }
 
 export interface IMatch {
-    match_mode: MatchMode
     match_language: MatchLanguage
     players: IUserOnline[]
     match_id: string
@@ -25,7 +30,6 @@ export interface IMatch {
 }
 
 export interface IMatchResponse {
-    match_mode: MatchMode
     match_language: MatchLanguage
     players: (IUser | Schema.Types.ObjectId)[]
     match_id: string

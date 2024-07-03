@@ -30,7 +30,6 @@ export default function ChangeNameModal({ open = true, initialValue, onClose, on
     })
 
     const handleSubmitForm = (values: yup.InferType<typeof ChangeNameFormSchema>) => {
-        console.log("🚀 ~ handleSubmitForm ~ values:", values)
         onSubmit?.(values.name)
     }
 

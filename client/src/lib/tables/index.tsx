@@ -1,5 +1,5 @@
 import { Button, ScrollShadow } from "@nextui-org/react";
-import Table from "./table";
+import TableItem from "./table";
 import { useAuthStore, useSocketStore, useStateMatch } from "@/stores";
 import { useGetTables } from "@/hooks/queries";
 import { useEffect, useMemo } from "react";
@@ -59,7 +59,7 @@ export default function Tables() {
             </div>
             <ScrollShadow size={0} hideScrollBar className="mt-4 h-[500px] w-full overflow-x-hidden py-4 px-2 relative">
                 <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
-                    {tables.map((table) => <Table key={table.table_id} table={table} onClickJoin={() => handleJoinSpecificTable(table.table_id)} />)}
+                    {tables.map((table) => <TableItem key={table.table_id} table={table} onClickJoin={() => handleJoinSpecificTable(table.table_id)} />)}
                 </div>
                 {isFindingMatch ? <div className="absolute inset-0 rounded-xl backdrop-blur-2xl z-50"><AppLoading className="bg-transparent h-full" /></div> : null}
 
