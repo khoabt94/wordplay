@@ -1,12 +1,8 @@
 import Background from '@/assets/background.png';
-import { useAuthActions, useToast } from '@/hooks/utils';
-import { Api } from '@/interfaces';
 import LoginForm from '@/lib/login';
 import SignupForm from '@/lib/signup';
-import { LoginFormSchema, SignupFormSchema } from '@/schemas/auth.schemas';
-import { Button, Switch } from '@nextui-org/react';
-import { useRef, useState } from "react";
-import * as yup from 'yup';
+import { Tab, Tabs } from '@nextui-org/react';
+import { useState } from "react";
 
 enum Mode {
     SIGNUP = 'SIGNUP',
@@ -14,26 +10,6 @@ enum Mode {
 }
 const LoginPage = () => {
     const [mode, setMode] = useState<Mode>(Mode.LOGIN)
-    const loginFormRef = useRef<{ getValues: () => yup.InferType<typeof LoginFormSchema> }>()
-    const signupFormRef = useRef<{ getValues: () => yup.InferType<typeof SignupFormSchema> }>()
-    const { signUp, login } = useAuthActions()
-    const { toastError } = useToast()
-
-    const onSubmit = async () => {
-        const values = mode === Mode.LOGIN ? await loginFormRef.current?.getValues() : await signupFormRef.current?.getValues()
-        if (!values) {
-            toastError('Empty values')
-            return;
-        }
-        if (mode === Mode.SIGNUP) {
-            await signUp(values as Api.AuthApi.SignUpPayload)
-        }
-        if (mode === Mode.LOGIN) {
-            await login(values as Api.AuthApi.LoginPayload)
-        }
-
-    }
-
     return (
         <div
             className='h-screen flex items-center justify-center'
@@ -44,24 +20,24 @@ const LoginPage = () => {
                 backgroundPosition: 'center'
             }}
         >
-            <div className="w-[400px] flex flex-col gap-y-5">
-                <div className="flex gap-1 items-center justify-between">
-                    <p className='font-bold text-xl'>
-                        {mode === Mode.LOGIN ? "Login" : "Signup"}
-                    </p>
-                    <Switch
-                        isSelected={mode === Mode.LOGIN}
-                        size="sm"
-                        onValueChange={() => setMode(prev => prev === Mode.LOGIN ? Mode.SIGNUP : Mode.LOGIN)}
-                    />
-                </div>
-                <div className="gap-5 flex flex-col">
-                    {mode === Mode.LOGIN ? <LoginForm ref={loginFormRef} /> : <SignupForm ref={signupFormRef} />}
-                </div>
-                <Button color="primary" onPress={onSubmit} className='h-10 font-medium'>
-                    {mode === Mode.LOGIN ? "Login" : "Signup"}
-                </Button>
+            <div className="w-[400px] h-[428px]">
+                <Tabs
+                    fullWidth
+                    size="md"
+                    aria-label="Tabs form"
+                    selectedKey={mode}
+                    onSelectionChange={(key) => setMode(key as Mode)}
+                    color='primary'
+                >
+                    <Tab key={Mode.LOGIN} title="Login">
+                        <LoginForm />
+                    </Tab>
+                    <Tab key={Mode.SIGNUP} title="Sign up">
+                        <SignupForm />
+                    </Tab>
+                </Tabs>
             </div>
+
         </div>
     )
 };
