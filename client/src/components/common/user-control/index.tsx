@@ -34,10 +34,8 @@ export default function UserControl() {
                 />
             </DropdownTrigger>
             <DropdownMenu aria-label="Static Actions">
-                <DropdownItem key="account">
-                    <Link to={siteConfig.paths.myProfile()} className="w-full block">
-                        My profile
-                    </Link>
+                <DropdownItem key="account" href={siteConfig.paths.myProfile()}>
+                    My profile
                 </DropdownItem>
                 <DropdownItem key="delete" className="text-danger" color="danger" onClick={handleClickLogout}>
                     Logout

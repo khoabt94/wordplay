@@ -46,3 +46,9 @@ export const ChangeNameFormSchema = yup.object().shape({
         .required('Please tell us your name')
         .max(20, 'A name should have maxiumum of 20 characters'),
 });
+
+export const AddFriendFormSchema = yup.object().shape({
+    email: yup.string()
+        .required('Please provide your email')
+        .test('valid_email', (val: string | undefined) => !!val && validator.isEmail(val)),
+});

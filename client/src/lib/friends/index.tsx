@@ -2,40 +2,61 @@ import { QUERY_KEY, ServerToClientEventsKeys } from "@/constants";
 import { useGetUsersOnline } from "@/hooks/queries";
 import { User } from "@/interfaces";
 import { useSocketStore } from "@/stores";
-import { User as UserComponent, ScrollShadow } from "@nextui-org/react";
+import { User as UserComponent, ScrollShadow, Tabs, Tab, Button } from "@nextui-org/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo } from "react";
+import Friend from "./friend";
+import { SmilePlus } from "lucide-react";
+import { useOpenModal } from "@/hooks/utils";
+import AddFriendModal from "@/components/modal/add-friend-modal";
 
 export default function FriendsList() {
-    const { socket } = useSocketStore()
-    const { data: dataUsersOnline, isFetching } = useGetUsersOnline()
-    const usersOnline = useMemo(() => dataUsersOnline?.users || [], [dataUsersOnline])
-    const queryClient = useQueryClient()
+    const { open } = useOpenModal()
 
-    useEffect(() => {
-        if (!socket) return;
-        socket.on(ServerToClientEventsKeys.number_users_online, ({ users }: { users: User.Detail[] }) => {
-            queryClient.setQueryData([QUERY_KEY.USER.GET_USERS_ONLINE], { users })
+    const handleAddFriend = async (email: string) => {
+        console.log(email)
+    }
+    const handleOpenModalAddFriend = () => {
+        open(AddFriendModal, {
+            onSubmit: (email) => handleAddFriend(email)
         })
-
-
-        return () => {
-            socket.off(ServerToClientEventsKeys.number_users_online, () => console.log('numberUsersOnline'));
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [socket]);
-
+    }
     return (
-        <ScrollShadow hideScrollBar className='flex flex-col gap-y-5 py-4 h-[600px]'>
-            {usersOnline.map((user) => (<UserComponent
-                key={user._id}
-                className='justify-start'
-                name={user.name}
-                description="Product Designer"
-                avatarProps={{
-                    src: user.avatar
-                }}
-            />))}
-        </ScrollShadow>
+        <div className="w-full bg-gray-900 rounded-lg hidden md:!block p-4 h-full">
+            <div className="flex justify-between items-center pb-3">
+                <h3 className='font-bold text-xl '>Your friends</h3>
+                <Button
+                    variant='ghost'
+                    radius='full'
+                    size='sm'
+                    className='!size-10 px-0 min-w-0 border-none'
+                    onPress={handleOpenModalAddFriend}
+                >
+                    <SmilePlus opacity={0.7} />
+                </Button>
+            </div>
+            <div className="">
+                <Tabs
+                    variant={'bordered'}
+                    aria-label="Tabs variants"
+                    className="w-full"
+                    classNames={{
+                        tabList: 'w-full'
+                    }}
+                >
+                    <Tab key="online" title="Online" />
+                    <Tab key="all" title="All" />
+                    <Tab key="request" title="Requests" />
+                </Tabs>
+                <ScrollShadow hideScrollBar className='flex flex-col gap-y-5 py-4 h-[600px]'>
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                </ScrollShadow>
+            </div>
+        </div>
+
     )
 }

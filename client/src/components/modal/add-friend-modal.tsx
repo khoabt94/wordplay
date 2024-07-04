@@ -2,7 +2,7 @@
 
 import { motionProps } from "@/constants";
 import { Common } from "@/interfaces";
-import { ChangeNameFormSchema } from "@/schemas";
+import { AddFriendFormSchema, ChangeNameFormSchema } from "@/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
     Button,
@@ -16,21 +16,21 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import * as yup from 'yup'
 
-interface ChangeNameModalProps extends Common.ModalProps {
-    initialValue: string
+interface EmailModalProps extends Common.ModalProps {
+
 }
 
-export default function ChangeNameModal({ open = true, initialValue, onClose, onSubmit }: ChangeNameModalProps) {
-    const form = useForm<yup.InferType<typeof ChangeNameFormSchema>>({
+export default function AddFriendModal({ open = true, onClose, onSubmit }: EmailModalProps) {
+    const form = useForm<yup.InferType<typeof AddFriendFormSchema>>({
         defaultValues: {
-            name: initialValue || '',
+            email: '',
         },
-        resolver: yupResolver(ChangeNameFormSchema),
+        resolver: yupResolver(AddFriendFormSchema),
         shouldFocusError: true,
     })
 
-    const handleSubmitForm = (values: yup.InferType<typeof ChangeNameFormSchema>) => {
-        onSubmit?.(values.name)
+    const handleSubmitForm = (values: yup.InferType<typeof AddFriendFormSchema>) => {
+        onSubmit?.(values.email)
     }
 
     return (
@@ -47,13 +47,16 @@ export default function ChangeNameModal({ open = true, initialValue, onClose, on
                 {(onClose) => (
                     <>
                         <ModalBody>
-                            <ModalHeader className="text-[#ecedee] text-center justify-center">Change your display name</ModalHeader>
+                            <ModalHeader className="text-[#ecedee] text-center justify-center">Provide your friend's email</ModalHeader>
 
                             <Controller
                                 control={form.control}
-                                name="name"
+                                name="email"
                                 render={({ field }) => (
-                                    <Input className="mt-5"  {...field} />
+                                    <Input
+                                        className="bg-transparent"
+                                        {...field}
+                                    />
                                 )}
                             />
                         </ModalBody>

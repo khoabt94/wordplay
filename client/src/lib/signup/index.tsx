@@ -1,7 +1,7 @@
 import PasswordInput from "@/components/input/password-input";
 import { useAuthActions } from "@/hooks/utils";
 import { Api } from "@/interfaces";
-import { SignupFormSchema } from "@/schemas/auth.schemas";
+import { SignupFormSchema } from "@/schemas";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
     Button,
