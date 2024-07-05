@@ -1,10 +1,10 @@
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './src/interfaces/socket';
 import express from "express";
 import { Server } from "socket.io";
-import initDb from './src/utils/db';
-import initErrorHandler from './src/utils/error-handler';
-import initMiddlewares from './src/utils/middlewares';
-import initRoutes from './src/utils/routes';
+import initDb from './src/middlewares/db';
+import initErrorHandler from './src/middlewares/error-handler';
+import initMiddlewares from './src/middlewares';
+import initRoutes from './src/middlewares/routes';
 import initSocket from './src/socket';
 
 const app = express();

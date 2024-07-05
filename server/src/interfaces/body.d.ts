@@ -10,11 +10,27 @@ export namespace Body {
     password: string
   }
 
-  interface updateMyProfile {
+  interface UpdateMyProfile {
     name?: string
     avatar?: string
     banner?: string
   }
 
+  interface DeleteFriend {
+    friend_id: string
+  }
+
+  interface SendFriendRequest {
+    receiver_id: string
+  }
+
+  interface DeleteFriendRequest {
+    receiver_id: string
+  }
+
+  interface ReplyFriendRequest {
+    request_id: string
+    is_accepted: boolean
+  }
 
 }

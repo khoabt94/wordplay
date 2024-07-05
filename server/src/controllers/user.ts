@@ -30,7 +30,7 @@ const getMyMatches = catchAsync(async (req: TypedRequest<{}, {}>, res: Response,
 })
 
 
-const updateMyProfile = catchAsync(async (req: TypedRequest<Body.updateMyProfile, {}>, res: Response, _next: NextFunction) => {
+const updateMyProfile = catchAsync(async (req: TypedRequest<Body.UpdateMyProfile, {}>, res: Response, _next: NextFunction) => {
   const { user } = req
   const { avatar, banner, name } = req.body
 

@@ -1,5 +1,11 @@
 import { Schema } from "mongoose";
 
+
+export interface IFriend {
+    friend_id: Schema.Types.ObjectId
+    friend_from: Date
+}
+
 export interface IUser {
     name: string;
     email: string;
@@ -11,6 +17,7 @@ export interface IUser {
     passwordChangeAt?: Date
     elo: number;
     _id: Schema.Types.ObjectId
+    friends: IFriend[]
 }
 
 export interface IUserMethods {

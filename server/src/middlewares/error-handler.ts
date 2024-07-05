@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response, Express } from "express";
-import { CustomError } from "./error";
+import { CustomError } from "../utils/error";
 
 export enum ErrorName {
   CastError = 'CastError',
