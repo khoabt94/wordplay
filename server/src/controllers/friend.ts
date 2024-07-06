@@ -90,7 +90,7 @@ const sendFriendRequest = catchAsync(async (req: TypedRequest<Body.SendFriendReq
 })
 
 const replyReceivedFriendRequests = catchAsync(async (req: TypedRequest<Body.ReplyFriendRequest, {}>, res: Response, next: NextFunction) => {
-  const { user, body: { is_accepted, request_id } } = req
+  const { user: receiver, body: { is_accepted, request_id } } = req
 
   if (!request_id || !is_accepted) {
     return next(new CustomError({
@@ -99,15 +99,30 @@ const replyReceivedFriendRequests = catchAsync(async (req: TypedRequest<Body.Rep
     }))
   }
 
-  const newFriendRequest = await FriendRequest.findByIdAndUpdate(request_id, {
-    isAccepted: is_accepted
-  }, { new: true })
+  const friendRequest = await FriendRequest.findById(request_id)
+  if (!friendRequest) {
+    return next(new CustomError({
+      message: "Friend request not found",
+      statusCode: 404
+    }))
+  }
+  friendRequest.isAccepted = is_accepted
+  await friendRequest.save()
+
+  if (is_accepted) {
+    await User.findByIdAndUpdate(receiver._id, {
+      friends: [...(receiver as IUser).friends, friendRequest.sender]
+    }
+    )
+    const sender = await User.findById(friendRequest.sender)
+    if (sender) {
+      sender.friends = [...(sender as IUser).friends, receiver._id]
+    }
+    await friendRequest.save()
+  }
 
   res.status(200).json({
     status: 'success',
-    data: {
-      updated_friend_request: newFriendRequest
-    }
   })
 })
 
