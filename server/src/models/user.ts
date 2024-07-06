@@ -48,7 +48,7 @@ const UserSchema = new Schema<IUser, TUserModel, IUserMethods, IUserVirtuals>({
     default: 500,
   },
   friends: [{
-    friend_id: {
+    friend_info: {
       type: Schema.ObjectId,
       ref: 'User',
     },

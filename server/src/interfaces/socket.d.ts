@@ -6,6 +6,7 @@ import { Table } from "./server/src/socket/table";
 import { IMatch, IMatchEndResponse } from "./match";
 import { Match } from "../socket/match";
 import { ITable } from "../socket/table";
+import { IFriendRequest } from "./friend-request";
 
 
 
@@ -22,6 +23,10 @@ export interface ServerToClientEvents {
     [ServerToClientEventsKeys.match_start]: (_data: { match: IMatchResponse, word: string, user_id_turn: string }) => void;
     [ServerToClientEventsKeys.opponent_answer]: (word: string) => void;
     [ServerToClientEventsKeys.match_end]: (_data: { match: IMatchResponse }) => void;
+
+    [ServerToClientEventsKeys.friend_request_receive]: (_data: { friendRequest: IFriendRequest }) => void;
+    [ServerToClientEventsKeys.friend_request_accept]: (_data: { friendRequest: IFriendRequest }) => void;
+    [ServerToClientEventsKeys.friend_request_decline]: (_data: { friendRequest: IFriendRequest }) => void;
 }
 
 

@@ -13,6 +13,11 @@ export enum ServerToClientEventsKeys {
     match_start = 'match_start',
     opponent_answer = 'opponent_answer',
     match_end = 'match_end',
+
+    // friend
+    friend_request_receive = 'friend_request_receive',
+    friend_request_accept = 'friend_request_accept',
+    friend_request_decline = 'friend_request_decline',
 }
 
 export enum ClientToServerEventsKeys {

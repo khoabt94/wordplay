@@ -7,6 +7,6 @@ import { Request as ExpressRequest } from "express";
 
 export interface TypedRequest<B, Q> extends ExpressRequest {
   body: B,
-  query: Q
+  query: Q,
   user?: IUser
 }

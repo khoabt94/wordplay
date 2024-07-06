@@ -1,8 +1,11 @@
 'use client'
 
 import { motionProps } from "@/constants";
+import { useSendFriendRequest } from "@/hooks/queries";
+import { useToast } from "@/hooks/utils";
 import { Common } from "@/interfaces";
 import { AddFriendFormSchema, ChangeNameFormSchema } from "@/schemas";
+import { useAuthStore } from "@/stores";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
     Button,
@@ -20,7 +23,10 @@ interface EmailModalProps extends Common.ModalProps {
 
 }
 
-export default function AddFriendModal({ open = true, onClose, onSubmit }: EmailModalProps) {
+export default function AddFriendModal({ open = true, onClose }: EmailModalProps) {
+    const { mutateAsync: sendFriendRequest } = useSendFriendRequest()
+    const { toastError, toastSuccess } = useToast()
+    const { user } = useAuthStore()
     const form = useForm<yup.InferType<typeof AddFriendFormSchema>>({
         defaultValues: {
             email: '',
@@ -29,8 +35,18 @@ export default function AddFriendModal({ open = true, onClose, onSubmit }: Email
         shouldFocusError: true,
     })
 
-    const handleSubmitForm = (values: yup.InferType<typeof AddFriendFormSchema>) => {
-        onSubmit?.(values.email)
+    const handleSubmitForm = async (values: yup.InferType<typeof AddFriendFormSchema>) => {
+        if (user && user.email === values.email) {
+            toastError('Can not send request to yourself!')
+            return
+        }
+        try {
+            await sendFriendRequest(values)
+            toastSuccess('Friend request sent!')
+            onClose?.()
+        } catch (error: any) {
+            toastError(error.message)
+        }
     }
 
     return (
@@ -47,7 +63,7 @@ export default function AddFriendModal({ open = true, onClose, onSubmit }: Email
                 {(onClose) => (
                     <>
                         <ModalBody>
-                            <ModalHeader className="text-[#ecedee] text-center justify-center">Provide your friend's email</ModalHeader>
+                            <ModalHeader className="text-[#ecedee] text-center justify-center">Provide an email to send request</ModalHeader>
 
                             <Controller
                                 control={form.control}

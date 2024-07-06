@@ -14,10 +14,6 @@ const FriendRequestSchema = new Schema<IFriendRequest, TFriendRequestModel, IFri
     ref: 'User',
     required: [true, 'Please provide sender id']
   },
-  isAccepted: {
-    type: Boolean,
-    default: false
-  }
 }, {
   timestamps: true
 })

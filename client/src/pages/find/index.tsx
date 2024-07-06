@@ -96,7 +96,7 @@ export default function FindMatchPage() {
   }, [socket]);
 
   return (
-    <div className="w-full grid md:grid-cols-[7fr_3fr] grid-cols-1 gap-x-5 h-full pb-4">
+    <div className="w-full grid md:grid-cols-[7fr_300px] grid-cols-1 gap-x-5 h-full pb-4">
       <div className="w-full bg-gray-900 rounded-lg p-4 h-full">
         <h3 className='font-bold text-xl pb-4 border-b-[1px] border-b-gray-700'>Select mode</h3>
         <FindForm />

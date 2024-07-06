@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 
 export interface IFriend {
-    friend_id: Schema.Types.ObjectId
+    friend_info: Schema.Types.ObjectId
     friend_from: Date
 }
 

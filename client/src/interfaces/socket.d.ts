@@ -2,6 +2,7 @@ import { ClientToServerEventsKeys, MatchLanguage, MatchMode, ServerToClientEvent
 import { Table } from "./table";
 import { User } from "./user";
 import { Match } from "./match";
+import { FriendRequest } from "./friend";
 
 export interface ServerToClientEvents {
     [ServerToClientEventsKeys.unauthenticated]: () => void
@@ -16,6 +17,10 @@ export interface ServerToClientEvents {
     [ServerToClientEventsKeys.match_start]: (_data: { match: Match.Detail, word: string, user_id_turn: string }) => void;
     [ServerToClientEventsKeys.opponent_answer]: (word: string) => void;
     [ServerToClientEventsKeys.match_end]: (_data: { match: Match.Detail }) => void;
+
+    [ServerToClientEventsKeys.friend_request_receive]: (_data: { friendRequest: Friend.FriendRequestDetail }) => void;
+    [ServerToClientEventsKeys.friend_request_accept]: (_data: { friendRequest: Friend.FriendRequestDetail }) => void;
+    [ServerToClientEventsKeys.friend_request_decline]: (_data: { friendRequest: Friend.FriendRequestDetail }) => void;
 }
 
 

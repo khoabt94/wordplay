@@ -4,11 +4,14 @@ import { useAuthStore } from '@/stores'
 import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
 import { EllipsisVertical } from 'lucide-react'
 import './friend.styles.css'
+import { User } from '@/interfaces'
 
-export default function Friend() {
-    const { user } = useAuthStore()
-    if (!user) return <></>
+type Props = {
+    friend: User.Detail
+    onClickDelete: () => void
+}
 
+export const FriendItem = ({ friend, onClickDelete }: Props) => {
     return (
         <Card
             isBlurred
@@ -19,14 +22,14 @@ export default function Friend() {
                 <div className="flex gap-6 items-center">
                     <div className="relative col-span-6 md:col-span-4">
                         <UserAvatar
-                            user={user}
+                            user={friend}
                         />
                     </div>
                     <div className="flex justify-between items-center flex-1">
                         <div className="flex flex-col gap-2">
                             <p>John Doe</p>
                             <UserElo
-                                user={user}
+                                user={friend}
                             />
                         </div>
                         <Dropdown>
@@ -43,7 +46,7 @@ export default function Friend() {
                             <DropdownMenu aria-label="Static Actions">
                                 <DropdownItem key="new">Invite</DropdownItem>
                                 <DropdownItem key="copy">See profile</DropdownItem>
-                                <DropdownItem key="delete" className="text-danger" color="danger">
+                                <DropdownItem key="delete" className="text-danger" color="danger" onClick={onClickDelete}>
                                     Delete Friend
                                 </DropdownItem>
                             </DropdownMenu>

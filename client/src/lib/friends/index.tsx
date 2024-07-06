@@ -1,24 +1,14 @@
-import { QUERY_KEY, ServerToClientEventsKeys } from "@/constants";
-import { useGetUsersOnline } from "@/hooks/queries";
-import { User } from "@/interfaces";
-import { useSocketStore } from "@/stores";
-import { User as UserComponent, ScrollShadow, Tabs, Tab, Button } from "@nextui-org/react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
-import Friend from "./friend";
-import { SmilePlus } from "lucide-react";
-import { useOpenModal } from "@/hooks/utils";
 import AddFriendModal from "@/components/modal/add-friend-modal";
+import { useOpenModal } from "@/hooks/utils";
+import { Accordion, AccordionItem, Button, ScrollShadow, Tab, Tabs } from "@nextui-org/react";
+import { SmilePlus } from "lucide-react";
+import { FriendItem, FriendList, FriendRequest } from "./components";
 
 export default function FriendsList() {
     const { open } = useOpenModal()
 
-    const handleAddFriend = async (email: string) => {
-        console.log(email)
-    }
     const handleOpenModalAddFriend = () => {
         open(AddFriendModal, {
-            onSubmit: (email) => handleAddFriend(email)
         })
     }
     return (
@@ -44,17 +34,15 @@ export default function FriendsList() {
                         tabList: 'w-full'
                     }}
                 >
-                    <Tab key="online" title="Online" />
+                    <Tab key="online" title="Online">
+                        <FriendList />
+                    </Tab>
                     <Tab key="all" title="All" />
-                    <Tab key="request" title="Requests" />
+                    <Tab key="request" title="Requests">
+                        <FriendRequest />
+                    </Tab>
                 </Tabs>
-                <ScrollShadow hideScrollBar className='flex flex-col gap-y-5 py-4 h-[600px]'>
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                </ScrollShadow>
+
             </div>
         </div>
 

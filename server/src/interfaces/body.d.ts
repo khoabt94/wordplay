@@ -21,15 +21,14 @@ export namespace Body {
   }
 
   interface SendFriendRequest {
-    receiver_id: string
+    email: string
   }
 
-  interface DeleteFriendRequest {
-    receiver_id: string
+  interface DeleteSentFriendRequest {
+    friend_request_id: string
   }
 
-  interface ReplyFriendRequest {
-    request_id: string
+  interface ReplyReceivedFriendRequest {
     is_accepted: boolean
   }
 

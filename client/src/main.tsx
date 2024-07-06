@@ -1,4 +1,5 @@
 import React from 'react'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import ReactDOM from 'react-dom/client'
 import { NextUIProvider } from "@nextui-org/system";
 import { BrowserRouter } from 'react-router-dom'
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </AuthProvider>
       </NextUIProvider>
     </BrowserRouter>
+    <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
   // </React.StrictMode>,
 )
