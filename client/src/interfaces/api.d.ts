@@ -41,9 +41,7 @@ export namespace Api {
       user: User.Detail,
     }
 
-    interface GetMyMatchesResponse {
-      matches: Match.Detail[],
-    }
+
 
     interface GetUsersOnlineResponse {
       users: User.Detail[],
@@ -102,5 +100,15 @@ export namespace Api {
       received_friend_requests: Friend.FriendRequestDetail[]
     }
 
+  }
+
+  namespace MatchApi {
+
+    interface GetMatchesParams {
+      user_id: string,
+    }
+    interface GetMatchesResponse {
+      matches: Match.Detail[],
+    }
   }
 }

@@ -3,6 +3,7 @@ import FindMatchPage from '@/pages/find';
 import HomePage from '@/pages/home';
 import MatchPage from '@/pages/match';
 import MyProfilePage from '@/pages/my-profile';
+import ProfilePage from '@/pages/profile';
 
 export const privateRoutes = [
   {
@@ -20,5 +21,9 @@ export const privateRoutes = [
   {
     path: siteConfig.paths.myProfile(),
     element: <MyProfilePage />,
+  },
+  {
+    path: siteConfig.paths.profileTemplate(),
+    element: <ProfilePage />,
   },
 ];

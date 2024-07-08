@@ -5,6 +5,7 @@ import { Button, Card, CardBody, Dropdown, DropdownItem, DropdownMenu, DropdownT
 import { EllipsisVertical } from 'lucide-react'
 import './friend.styles.css'
 import { User } from '@/interfaces'
+import { siteConfig } from '@/configs/site'
 
 type Props = {
     friend: User.Detail
@@ -27,7 +28,7 @@ export const FriendItem = ({ friend, onClickDelete }: Props) => {
                     </div>
                     <div className="flex justify-between items-center flex-1">
                         <div className="flex flex-col gap-2">
-                            <p>John Doe</p>
+                            <p>{friend.name}</p>
                             <UserElo
                                 user={friend}
                             />
@@ -45,7 +46,7 @@ export const FriendItem = ({ friend, onClickDelete }: Props) => {
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Static Actions">
                                 <DropdownItem key="new">Invite</DropdownItem>
-                                <DropdownItem key="copy">See profile</DropdownItem>
+                                <DropdownItem key="copy" href={siteConfig.paths.profile(friend._id)}>See profile</DropdownItem>
                                 <DropdownItem key="delete" className="text-danger" color="danger" onClick={onClickDelete}>
                                     Delete Friend
                                 </DropdownItem>

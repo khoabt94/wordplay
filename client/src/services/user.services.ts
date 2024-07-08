@@ -8,11 +8,6 @@ export const getMyProfile = async (
   return await AxiosInstance.get(`${BASE_URL}/my-profile`);
 };
 
-export const getMyMatches = async (
-): Promise<Api.UserApi.GetMyMatchesResponse> => {
-  return await AxiosInstance.get(`${BASE_URL}/my-match`);
-};
-
 export const updateMyProfile = async (
   payload: Api.UserApi.UpdateMyProfilePayload
 ): Promise<Api.UserApi.UpdateMyProfileResponse> => {

@@ -1,10 +1,16 @@
 import AddFriendModal from "@/components/modal/add-friend-modal";
 import { useOpenModal } from "@/hooks/utils";
-import { Accordion, AccordionItem, Button, ScrollShadow, Tab, Tabs } from "@nextui-org/react";
+import { Button, Tab, Tabs } from "@nextui-org/react";
 import { SmilePlus } from "lucide-react";
-import { FriendItem, FriendList, FriendRequest } from "./components";
+import { FriendList, FriendRequest } from "./components";
+import { cn } from "@/utils/cn";
 
-export default function FriendsList() {
+type Props = {
+    className?: string
+}
+
+
+export default function FriendsListSection({ className }: Props) {
     const { open } = useOpenModal()
 
     const handleOpenModalAddFriend = () => {
@@ -12,9 +18,9 @@ export default function FriendsList() {
         })
     }
     return (
-        <div className="w-full bg-gray-900 rounded-lg hidden md:!block p-4 h-full">
+        <div className={cn("w-full bg-gray-900  p-4 h-full", className)}>
             <div className="flex justify-between items-center pb-3">
-                <h3 className='font-bold text-xl '>Your friends</h3>
+                <h3 className='font-bold text-xl text-gray-50'>Your friends</h3>
                 <Button
                     variant='ghost'
                     radius='full'
@@ -22,7 +28,7 @@ export default function FriendsList() {
                     className='!size-10 px-0 min-w-0 border-none'
                     onPress={handleOpenModalAddFriend}
                 >
-                    <SmilePlus opacity={0.7} />
+                    <SmilePlus opacity={0.7} color="#C0C0C0" />
                 </Button>
             </div>
             <div className="">
@@ -35,7 +41,7 @@ export default function FriendsList() {
                     }}
                 >
                     <Tab key="online" title="Online">
-                        <FriendList />
+                        <FriendList className="h-[600px]" />
                     </Tab>
                     <Tab key="all" title="All" />
                     <Tab key="request" title="Requests">

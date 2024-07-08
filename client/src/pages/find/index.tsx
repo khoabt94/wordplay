@@ -5,7 +5,7 @@ import { ClientToServerEventsKeys, QUERY_KEY, ServerToClientEventsKeys } from '@
 import { useHandleRouter, useOpenModal, useToast } from '@/hooks/utils';
 import { ServerToClientEvents, Table } from '@/interfaces';
 import FindForm from '@/lib/find/find-form';
-import FriendsList from '@/lib/friends';
+import FriendsListSection from '@/lib/friends';
 import Tables from '@/lib/tables';
 import { useAuthStore, useSocketStore, useStateMatch } from '@/stores';
 import { useQueryClient } from '@tanstack/react-query';
@@ -102,7 +102,7 @@ export default function FindMatchPage() {
         <FindForm />
         <Tables />
       </div>
-      <FriendsList />
+      <FriendsListSection className='hidden md:!block rounded-lg' />
     </div >
   );
 }

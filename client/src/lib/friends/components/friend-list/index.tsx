@@ -2,14 +2,19 @@ import { ScrollShadow } from "@nextui-org/react";
 import { FriendItem } from "../friend-item";
 import { useDeleteFriend, useGetFriends } from "@/hooks/queries";
 import { useMemo } from "react";
+import { cn } from "@/utils/cn";
 
-export function FriendList() {
+type Props = {
+    className?: string
+}
+
+export function FriendList({ className }: Props) {
     const { data: dataFriends } = useGetFriends()
     const friends = useMemo(() => dataFriends?.friends || [], [dataFriends])
     const { mutateAsync: deleteFriend } = useDeleteFriend()
 
     return (
-        <ScrollShadow hideScrollBar className='flex flex-col gap-y-5 py-4 h-[600px]'>
+        <ScrollShadow hideScrollBar className={cn('flex flex-col gap-y-5 py-4 ', className)}>
             {friends.length ? friends.map(friend => (
                 <FriendItem
                     friend={friend.friend_info}

@@ -30,7 +30,14 @@ export function FriendRequest() {
 
     return (
         <Accordion selectionMode="multiple" defaultSelectedKeys={[FriendRequestAccordionItem.RECEIVED_FRIEND_REQUEST]}>
-            <AccordionItem key={FriendRequestAccordionItem.RECEIVED_FRIEND_REQUEST} aria-label="Received" title="Received" >
+            <AccordionItem
+                key={FriendRequestAccordionItem.RECEIVED_FRIEND_REQUEST}
+                aria-label="Received"
+                title="Received"
+                classNames={{
+                    title: 'text-gray-50',
+                }}
+            >
                 {receivedFriendRequests.length ? receivedFriendRequests.map(friendRequest => (
                     <FriendRequestItem
                         key={friendRequest._id}
@@ -73,7 +80,14 @@ export function FriendRequest() {
                     />
                 )) : <p className='italic text-center text-gray-400 text-sm'>Not receive any friend request yet</p>}
             </AccordionItem>
-            <AccordionItem key={FriendRequestAccordionItem.SENT_FRIEND_REQUEST} aria-label="Sent" title="Sent">
+            <AccordionItem
+                key={FriendRequestAccordionItem.SENT_FRIEND_REQUEST}
+                aria-label="Sent"
+                title="Sent"
+                classNames={{
+                    title: 'text-gray-50',
+                }}
+            >
                 {sentFriendRequests.length ? sentFriendRequests.map(friendRequest => (
                     <FriendRequestItem
                         key={friendRequest._id}
@@ -88,6 +102,6 @@ export function FriendRequest() {
                         )}
                     />)) : <p className='italic text-center text-gray-400 text-sm'>Not send any friend request yet</p>}
             </AccordionItem>
-        </Accordion>
+        </Accordion >
     )
 }
