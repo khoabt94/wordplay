@@ -19,7 +19,7 @@ const getMyProfile = catchAsync(async (req: TypedRequest<{}, {}>, res: Response,
 
 const getMyMatches = catchAsync(async (req: TypedRequest<{}, {}>, res: Response, _next: NextFunction) => {
   const { user } = req
-  const matches = await Match.find({ players: user._id }).populate('players', '-createdAt -__v -updatedAt -email')
+  const matches = await Match.find({ players: user._id }).populate('players', '-createdAt -__v -updatedAt -email -friends')
 
   res.status(200).json({
     status: 'success',

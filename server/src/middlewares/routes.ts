@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import { CustomError } from '../utils/error'
-import { authRouter, friendRouter, tableRouter, userRouter } from '../routes'
+import { authRouter, friendRouter, playerRouter, tableRouter, userRouter } from '../routes'
 import { Routes } from '../constants'
 
 export default (app: Express) => {
@@ -8,6 +8,7 @@ export default (app: Express) => {
   app.use(Routes.user, userRouter)
   app.use(Routes.table, tableRouter)
   app.use(Routes.friend, friendRouter)
+  app.use(Routes.player, playerRouter)
 
 
   app.all('*', (req, _res, _next) => {
