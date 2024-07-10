@@ -7,5 +7,14 @@ export namespace User {
     banner: string
     elo: number
     _id: string
+    friends: User.Detail[]
+  }
+
+  interface SimpleDetail {
+    name: string;
+    avatar: string;
+    banner: string
+    elo: number
+    _id: string
   }
 }

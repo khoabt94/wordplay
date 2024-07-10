@@ -1,15 +1,15 @@
-import { useGetMatches } from "@/hooks/queries";
 import { User } from "@/interfaces";
 import { ScrollShadow } from "@nextui-org/react";
 import { useMemo } from "react";
 import Match from "./match";
+import { useGetPlayerMatches } from "@/hooks/queries";
 
 type MatchListProps = {
     user: User.Detail
 }
 
 export default function MatchList({ user }: MatchListProps) {
-    const { data: dataMatches } = useGetMatches({ user_id: user?._id || '' })
+    const { data: dataMatches } = useGetPlayerMatches({ user_id: user?._id || '' })
     const matches = useMemo(() => dataMatches?.matches || [], [dataMatches])
     return (
         <>

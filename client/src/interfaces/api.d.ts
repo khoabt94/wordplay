@@ -111,4 +111,19 @@ export namespace Api {
       matches: Match.Detail[],
     }
   }
+
+  namespace PlayerApi {
+
+    interface GetPlayerProfileParams {
+      user_id: string,
+    }
+
+
+
+    interface GetPlayerProfileResponse {
+      user: User.Detail
+    }
+
+
+  }
 }
