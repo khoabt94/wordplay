@@ -2,7 +2,7 @@ import { ClientToServerEventsKeys, MatchLanguage, MatchMode, ServerToClientEvent
 import { Table } from "./table";
 import { User } from "./user";
 import { Match } from "./match";
-import { FriendRequest } from "./friend";
+import { Friend } from "./friend";
 
 export interface ServerToClientEvents {
     [ServerToClientEventsKeys.unauthenticated]: () => void

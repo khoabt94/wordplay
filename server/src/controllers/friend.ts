@@ -108,12 +108,12 @@ const sendFriendRequest = catchAsync(async (req: TypedRequest<Body.SendFriendReq
     receiver: receiver._id,
     sender: sender._id
   })
-
+  const populatedNewFriendRequest = await newFriendRequest.populate('sender', '-__v -updatedAt -email -friends -createdAt')
 
   // Handle socket to receiver
   const existReceiverOnline = CurrentUsersOnline.findUser(String(receiver._id))
   if (existReceiverOnline) {
-    io.to(existReceiverOnline.socket_id).emit(ServerToClientEventsKeys.friend_request_receive, { friendRequest: newFriendRequest })
+    io.to(existReceiverOnline.socket_id).emit(ServerToClientEventsKeys.friend_request_receive, { friendRequest: populatedNewFriendRequest })
   }
 
   res.status(200).json({
@@ -139,7 +139,7 @@ const replyReceivedFriendRequest = catchAsync(async (req: TypedRequest<Body.Repl
   }
 
   // Handle delete friendRequest
-  const friendRequest = await FriendRequest.findById(friend_request_id)
+  const friendRequest = await FriendRequest.findById(friend_request_id).populate('receiver', '-__v -updatedAt -email -friends -createdAt')
 
   if (!friendRequest) {
     return next(new CustomError({
