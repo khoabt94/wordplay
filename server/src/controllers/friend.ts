@@ -95,6 +95,24 @@ const sendFriendRequest = catchAsync(async (req: TypedRequest<Body.SendFriendReq
       statusCode: 404
     }))
   }
+
+  // already sent request or received request
+  const checkExistFriendRequest = await FriendRequest.findOne({
+    $or: [
+      { sender, receiver },
+      { sender: receiver, receiver: sender },
+    ]
+  })
+  console.log("🚀 ~ sendFriendRequest ~ checkExistFriendRequest:", checkExistFriendRequest)
+  if (checkExistFriendRequest) {
+    return next(new CustomError({
+      message: "You already sent/received friend request to/from this person",
+      statusCode: 404
+    }))
+  }
+
+
+  // already friend
   const checkExistFriend = (sender as IUser).friends.some(friend => String(friend.friend_info) === String(receiver._id))
   if (checkExistFriend) {
     return next(new CustomError({

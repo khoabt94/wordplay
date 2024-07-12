@@ -96,7 +96,7 @@ export function FriendRequest() {
                         render={(friendRequest) => (
                             <DropdownMenu aria-label="Static Actions">
                                 <DropdownItem key="delete" className="text-danger" color="danger" onClick={() => deleteSentFriendRequest({ friend_request_id: friendRequest._id })}>
-                                    Delete Friend
+                                    Delete request
                                 </DropdownItem>
                             </DropdownMenu>
                         )}
