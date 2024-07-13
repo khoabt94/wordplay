@@ -4,6 +4,7 @@ import { Button, Tab, Tabs } from "@nextui-org/react";
 import { SmilePlus } from "lucide-react";
 import { FriendList, FriendRequest } from "./components";
 import { cn } from "@/utils/cn";
+import { useHandleFriendsOnline } from "@/hooks/queries";
 
 type Props = {
     className?: string
@@ -12,7 +13,8 @@ type Props = {
 
 export default function FriendsListSection({ className }: Props) {
     const { open } = useOpenModal()
-
+    const { friendsOnline } = useHandleFriendsOnline()
+    console.log("🚀 ~ FriendsListSection ~ friendsOnline:", friendsOnline)
     const handleOpenModalAddFriend = () => {
         open(AddFriendModal, {
         })
@@ -40,10 +42,9 @@ export default function FriendsListSection({ className }: Props) {
                         tabList: 'w-full'
                     }}
                 >
-                    <Tab key="online" title="Online">
-                        <FriendList className="h-[600px]" />
+                    <Tab key="friend" title="Friends">
+                        <FriendList className="h-[600px]" friendsOnline={friendsOnline} />
                     </Tab>
-                    <Tab key="all" title="All" />
                     <Tab key="request" title="Requests">
                         <FriendRequest />
                     </Tab>

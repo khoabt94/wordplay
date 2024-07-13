@@ -103,7 +103,7 @@ const sendFriendRequest = catchAsync(async (req: TypedRequest<Body.SendFriendReq
       { sender: receiver, receiver: sender },
     ]
   })
-  console.log("🚀 ~ sendFriendRequest ~ checkExistFriendRequest:", checkExistFriendRequest)
+
   if (checkExistFriendRequest) {
     return next(new CustomError({
       message: "You already sent/received friend request to/from this person",

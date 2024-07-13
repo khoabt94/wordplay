@@ -1,7 +1,10 @@
-import { QUERY_KEY } from '@/constants';
-import { Api, ReactQuery } from '@/interfaces';
+import { QUERY_KEY, ServerToClientEventsKeys } from '@/constants';
+import { Api, ReactQuery, User } from '@/interfaces';
 import { deleteFriend, deleteSentFriendRequest, getFriends, getReceivedFriendRequests, getSentFriendRequests, replyReceivedFriendRequest, sendFriendRequest } from '@/services';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useGetUsersOnline } from './user';
+import { useSocketStore } from '@/stores';
+import { useEffect, useMemo } from 'react';
 
 export const useSendFriendRequest = () => {
   const queryClient = useQueryClient()
@@ -81,4 +84,30 @@ export const useGetReceivedFriendRequests = (options?: ReactQuery.Options,) => {
     queryFn: getReceivedFriendRequests,
     ...options
   })
+}
+
+export const useHandleFriendsOnline = () => {
+  const { socket } = useSocketStore()
+  const { data: dataUsersOnline } = useGetUsersOnline()
+  const { data: dataFriends } = useGetFriends()
+  const friendsOnline = useMemo(() => {
+    if (!dataFriends || dataFriends?.friends.length === 0 || !dataUsersOnline || dataUsersOnline?.users.length === 0) return []
+    return dataFriends.friends.filter(friend => !!dataUsersOnline.users.find(user => user._id === friend.friend_info._id))
+  }, [dataUsersOnline, dataFriends])
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.on(ServerToClientEventsKeys.number_users_online, ({ users }: { users: User.Detail[] }) => {
+      queryClient.setQueryData([QUERY_KEY.USER.GET_USERS_ONLINE], { users })
+    })
+
+
+    return () => {
+      socket.off(ServerToClientEventsKeys.number_users_online, () => console.log('numberUsersOnline'));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
+
+  return { friendsOnline }
 }
