@@ -20,7 +20,7 @@
     "@types/validator": "^13.11.10",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
-    "framer-motion": "^11.2.11",
+    "framer-motion": "^11.3.2",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.383.0",
     "moment": "^2.30.1",
