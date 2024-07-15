@@ -11,7 +11,6 @@ export default function PlayerProfilePage() {
     const { profileId } = useParams()
     const { data: dataPlayerProfile, isLoading } = useGetPlayerProfile({ user_id: profileId as string })
     const playerProfile = useMemo(() => dataPlayerProfile?.user, [dataPlayerProfile])
-    console.log("🚀 ~ PlayerProfilePage ~ playerProfile:", playerProfile)
     if (isLoading) {
         return <AppLoading className="h-screen" />
     }

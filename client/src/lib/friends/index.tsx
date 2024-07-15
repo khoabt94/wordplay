@@ -14,7 +14,6 @@ type Props = {
 export default function FriendsListSection({ className }: Props) {
     const { open } = useOpenModal()
     const { friendsOnline } = useHandleFriendsOnline()
-    console.log("🚀 ~ FriendsListSection ~ friendsOnline:", friendsOnline)
     const handleOpenModalAddFriend = () => {
         open(AddFriendModal, {
         })

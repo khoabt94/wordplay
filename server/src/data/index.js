@@ -23,5 +23,4 @@ fs.readFile("result.json", "utf8", (error, data) => {
     console.error("Đã xảy ra lỗi khi đọc tệp:", error);
     return;
   }
-  console.log(JSON.parse(data));
 });
