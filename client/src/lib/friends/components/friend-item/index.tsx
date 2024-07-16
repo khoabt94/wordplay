@@ -12,10 +12,11 @@ import { useMemo } from 'react'
 type Props = {
     friend: User.Detail
     onClickDelete: () => void
+    onClickInvite: (_friend_id: string) => void
     isOnline: boolean
 }
 
-export const FriendItem = ({ friend, onClickDelete, isOnline }: Props) => {
+export const FriendItem = ({ friend, onClickDelete, isOnline, onClickInvite }: Props) => {
     const disabledKey = useMemo(() => {
         if (isOnline) return []
         else return ['invite']
@@ -56,7 +57,7 @@ export const FriendItem = ({ friend, onClickDelete, isOnline }: Props) => {
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Static Actions" disabledKeys={disabledKey}>
-                                <DropdownItem key="invite">Invite</DropdownItem>
+                                <DropdownItem key="invite" onClick={() => onClickInvite(friend._id)}>Invite</DropdownItem>
                                 <DropdownItem key="copy" href={siteConfig.paths.profile(friend._id)}>See profile</DropdownItem>
                                 <DropdownItem key="delete" className="text-danger" color="danger" onClick={onClickDelete}>
                                     Delete Friend

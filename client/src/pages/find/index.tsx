@@ -1,5 +1,7 @@
 
+import FriendInviteModal from '@/components/modal/friend-invite-modal';
 import MatchFoundModal from '@/components/modal/match-found-modal';
+import WaitFriendModal from '@/components/modal/wait-friend-modal';
 import { siteConfig } from '@/configs/site';
 import { ClientToServerEventsKeys, QUERY_KEY, ServerToClientEventsKeys } from '@/constants';
 import { useHandleRouter, useOpenModal, useToast } from '@/hooks/utils';
@@ -81,16 +83,49 @@ export default function FindMatchPage() {
     })
   }
 
+  const onSocketFriendInviteMatch: ServerToClientEvents[ServerToClientEventsKeys.invite_match_by_friend] = ({ table }) => {
+    if (!user) return;
+    const friend = table.players.find(p => p.user_id !== user._id)
+    const owner = table.players.find(p => p.user_id === user._id)
+    open(FriendInviteModal, {
+      friend: friend?.user,
+      user: owner?.user,
+      onClose: () => emitSocketCancelMatch(table),
+      onConfirm: () => emitSocketAcceptMatch(table),
+      onOpponentCancel: () => emitSocketMatchFoundCancel()
+    })
+  }
+
+  const onSocketWaitFriend: ServerToClientEvents[ServerToClientEventsKeys.wait_for_your_friend] = ({ table }) => {
+    if (!user) return;
+    const friend = table.players.find(p => p.user_id !== user._id)
+    const owner = table.players.find(p => p.user_id === user._id)
+    open(WaitFriendModal, {
+      friend: friend?.user,
+      user: owner?.user,
+      onClose: () => emitSocketCancelMatch(table),
+      onFriendCancel: () => emitSocketMatchFoundCancel()
+    })
+  }
+
+
   useEffect(() => {
     if (!socket) return;
     socket.on(ServerToClientEventsKeys.create_table, onSocketCreateTable)
     socket.on(ServerToClientEventsKeys.found_match, onSocketFoundMatch)
     socket.on(ServerToClientEventsKeys.joining_match, onSocketJoiningMatch)
 
+    socket.on(ServerToClientEventsKeys.invite_match_by_friend, onSocketFriendInviteMatch)
+    socket.on(ServerToClientEventsKeys.wait_for_your_friend, onSocketWaitFriend)
+    socket.on(ServerToClientEventsKeys.invite_friend_error, ({ message }) => toastError(message))
+
     return () => {
       socket.off(ServerToClientEventsKeys.create_table, () => console.log('create_table'));
       socket.off(ServerToClientEventsKeys.found_match, () => console.log('found_match'));
-      socket.off(ServerToClientEventsKeys.joining_match, onSocketFoundMatch)
+      socket.off(ServerToClientEventsKeys.joining_match, () => console.log('joining_match'))
+      socket.off(ServerToClientEventsKeys.invite_match_by_friend, () => console.log('invite_match_by_friend'))
+      socket.off(ServerToClientEventsKeys.wait_for_your_friend, () => console.log('wait_for_your_friend'))
+      socket.off(ServerToClientEventsKeys.invite_friend_error, () => console.log('invite_friend_error'))
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);

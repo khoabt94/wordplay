@@ -21,6 +21,9 @@ export interface ServerToClientEvents {
     [ServerToClientEventsKeys.friend_request_receive]: (_data: { friendRequest: Friend.FriendRequestDetail }) => void;
     [ServerToClientEventsKeys.friend_request_accept]: (_data: { friendRequest: Friend.FriendRequestDetail }) => void;
     [ServerToClientEventsKeys.friend_request_decline]: (_data: { friendRequest: Friend.FriendRequestDetail }) => void;
+    [ServerToClientEventsKeys.invite_friend_error]: (_data: { message: string }) => void;
+    [ServerToClientEventsKeys.wait_for_your_friend]: (_data: { table: Table.Detail }) => void;
+    [ServerToClientEventsKeys.invite_match_by_friend]: (_data: { table: Table.Detail }) => void;
 }
 
 
@@ -35,6 +38,7 @@ export interface ClientToServerEvents {
     [ClientToServerEventsKeys.joined_match]: (_data: { match_id: string, user_id: any }) => void;
     [ClientToServerEventsKeys.answer]: (_data: { match_id: string, word: string, user_id: string }) => void;
     [ClientToServerEventsKeys.time_out]: (_data: { match_id: string, user_id: string }) => void;
+    [ClientToServerEventsKeys.invite_friend]: (_data: { match_language: MatchLanguage, user_id: string, friend_id: string }) => void;
 }
 
 

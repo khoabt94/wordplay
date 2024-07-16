@@ -43,9 +43,10 @@ export default function Header() {
         </motion.button>
       )}
 
-      <div className="hidden md:block">
+      {pathname === siteConfig.paths.home() ? (
         <img src='/logo.webp' alt="Logo" width={180} height={180} />
-      </div>
+      ) : null}
+
       <Suspense>
         <UserControl />
       </Suspense>

@@ -91,7 +91,6 @@ const disconnect = (socket: CustomSocket) => {
 
 const acceptMatch = async (socket: CustomSocket, { tableId, userId }: { tableId: string, userId: string }) => {
     const findTable = CurrentTables.findTable(tableId)
-    if (!findTable) return
     if (!findTable) {
         socket.emit(ServerToClientEventsKeys.join_specific_table_error, { message: 'Table not found!. Please refresh table list' })
         return
@@ -129,6 +128,48 @@ const timeout = async ({ match_id, user_id }: { match_id: string, user_id: strin
     }
 }
 
+const inviteFriend = async (socket: CustomSocket, { match_language, user_id, friend_id }: { match_language: MatchLanguage, user_id: string, friend_id: string }) => {
+    const user = await User.findById(user_id).select(DEFAULT_USER_INFO_SELECT_FIELD)
+
+    if (!user) {
+        socket.emit(ServerToClientEventsKeys.unauthenticated)
+        return
+    }
+    const userOnline = new UserOnline({ socket_id: socket.id, user_id: String(user._id), user })
+
+    if (!user.friends.find(friend => String(friend.friend_info) === friend_id)) {
+        socket.emit(ServerToClientEventsKeys.invite_friend_error, ({ message: 'This person not your friend yet!' }))
+        return
+    }
+
+    const yourFriendOnline = CurrentUsersOnline.findUser(friend_id)
+
+    if (!yourFriendOnline) {
+        socket.emit(ServerToClientEventsKeys.invite_friend_error, ({ message: 'Your friend not online right now!' }))
+        return
+    }
+    const yourFriendSocket = io.sockets.sockets.get(yourFriendOnline.socket_id);
+    if (!yourFriendSocket) {
+        socket.emit(ServerToClientEventsKeys.invite_friend_error, ({ message: 'Your friend not online right now!' }))
+        return
+    }
+    const newTable = new Table({
+        match_language,
+        players: [
+            userOnline,
+            yourFriendOnline
+        ],
+    })
+    newTable.acceptMatch(Object(user_id))
+    CurrentTables.createTable(newTable)
+    socket.join(newTable.detail.table_id)
+    yourFriendSocket.join(newTable.detail.table_id)
+
+    socket.emit(ServerToClientEventsKeys.wait_for_your_friend, { table: newTable.detail })
+    yourFriendSocket.emit(ServerToClientEventsKeys.invite_match_by_friend, { table: newTable.detail })
+
+}
+
 export const socketControllers = {
     authenticate,
     findMatch,
@@ -139,5 +180,6 @@ export const socketControllers = {
     answer,
     timeout,
     acceptMatch,
-    cancelFoundMatch
+    cancelFoundMatch,
+    inviteFriend
 }

@@ -62,6 +62,10 @@ export default (io: CustomSocketServer) => {
         socket.on(ServerToClientEventsKeys.disconnect, () => {
             socketControllers.disconnect(socket)
         });
+
+        socket.on(ClientToServerEventsKeys.invite_friend, (data) => {
+            socketControllers.inviteFriend(socket, data)
+        });
     });
 
 

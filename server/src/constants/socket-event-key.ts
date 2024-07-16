@@ -18,6 +18,10 @@ export enum ServerToClientEventsKeys {
     friend_request_receive = 'friend_request_receive',
     friend_request_accept = 'friend_request_accept',
     friend_request_decline = 'friend_request_decline',
+    invite_friend_error = 'invite_friend_error',
+    wait_for_your_friend = 'wait_for_your_friend',
+    invite_match_by_friend = 'invite_match_by_friend'
+
 }
 
 export enum ClientToServerEventsKeys {
@@ -32,5 +36,8 @@ export enum ClientToServerEventsKeys {
     // match
     joined_match = 'joined_match',
     answer = 'answer',
-    time_out = 'time_out'
+    time_out = 'time_out',
+
+    // friend
+    invite_friend = 'invite_friend',
 }
